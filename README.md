@@ -1,2 +1,2 @@
-# git-idea
-git integration idea
+# java-web-git-idea
+java web code and idea + git
