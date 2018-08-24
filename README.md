@@ -1,2 +1,2 @@
-# java-web-git-idea
-java web code and idea + git
+# java-redis
+## java实现redis缓存的部分功能
