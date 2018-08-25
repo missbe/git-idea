@@ -11,17 +11,16 @@ import java.io.PrintStream;
 import java.net.Socket;
 
 public class RedisServerThread implements Runnable {
-    private Socket          socket;                    ///定义当前线程所处理的Socket
-    private BufferedReader  bufferedReader;           ///该线程对应的输入流
-    private PrintStream     printStream;             ///该线程对应的输出流
-    private boolean         isClose         = false; ///标记该线程是否应该关闭
+    private Socket          socket;               ///定义当前线程所处理的Socket
+    private BufferedReader  bufferedReader;      ///该线程对应的输入流
+    private PrintStream     printStream;         ///该线程对应的输出流
+    private boolean         isClose    = false; ///标记该线程是否应该关闭
 
     public RedisServerThread(Socket socket) throws IOException {
         this.socket = socket;
         bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         printStream = new PrintStream(socket.getOutputStream());
         PrintUtil.print(socket.toString() + "连接到服务器.", SystemLog.Level.info);
-
     }
 
     public void run() {

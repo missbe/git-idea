@@ -1,5 +1,6 @@
 package cn.missbe.redis.map;
 
+import cn.missbe.redis.App;
 import cn.missbe.util.PrintUtil;
 import cn.missbe.util.SystemLog;
 
@@ -148,12 +149,40 @@ public class RedisMapImpl implements IRedisMap {
     }
 
     /**
+     * 设置键值对对象的过期对象
+     * @param key 指定键
+     * @param mills  过期毫秒数
+     * @return 返回结果消息
+     */
+    public String expire(String key,long seconds) {
+        long mills = seconds * 1000 + System.currentTimeMillis();///在当前时间上增加mills秒数
+        if(maps.containsKey(key)){
+            maps.get(key).setTimeOut(mills);
+        }else if(setMaps.containsKey(key)){
+           HashSet<KeyValueNode> set = setMaps.get(key);
+           Iterator<KeyValueNode> iterator = set.iterator();
+           while (iterator.hasNext()){
+               KeyValueNode valueNode = iterator.next();
+               valueNode.setTimeOut(mills);
+           }///end while
+        }else if(listMaps.containsKey(key)){
+            List<KeyValueNode> list = listMaps.get(key);
+            Iterator<KeyValueNode> iterator = list.iterator();
+            while (iterator.hasNext()){
+                KeyValueNode valueNode = iterator.next();
+                valueNode.setTimeOut(mills);
+            }///end while
+        }
+        return "OK";
+    }
+
+    /**
      * 查找指定key的值
      * @param key 指定key
      * @return key对应的值
      */
     public String get(String key) {
-        String msg = "键值对缓存对象已经过期或n已经被移除.";
+        String msg = "键值对缓存对象已经过期或已经被移除.";
 
         if(maps.containsKey(key)){
             KeyValueNode node = maps.get(key);
@@ -211,6 +240,8 @@ public class RedisMapImpl implements IRedisMap {
         }else{
             msg = "该键值对对象不在缓存中.";
         }
+        ///访问次数加1
+        App.REDIS_MODIFY_NUMBER++;
 
         return msg;
     }

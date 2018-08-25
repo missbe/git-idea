@@ -5,7 +5,7 @@ import cn.missbe.redis.map.RedisMapImpl;
 
 public class CommandProcessUtil {
 
-    private final static String[] commands = {"set","lset", "hset", "get", "del", "time"};
+    private final static String[] commands = {"set","lset", "hset", "get", "del", "expire"};
 
 
     public static String processCommand(String command){
@@ -30,6 +30,10 @@ public class CommandProcessUtil {
             case "del":
                 msg = redisMap.delete(commands[1]);
                 break;
+            case "expire":
+
+                msg = redisMap.expire(commands[1],commands[2].equalsIgnoreCase("ever") ? Long.MAX_VALUE : Long.valueOf(commands[2]));
+                break;
 
         }
 
@@ -50,6 +54,7 @@ public class CommandProcessUtil {
             case "del":
                 return commands.length == 2 && isCommand(command);
             case "set":
+            case "expire":
                 return commands.length == 3 && isCommand(command);
             case "lset":
             case "hset":

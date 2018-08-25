@@ -4,6 +4,8 @@ import cn.missbe.redis.util.PropertiesUtil;
 import cn.missbe.util.PrintUtil;
 import cn.missbe.util.SystemLog;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 public class App {
@@ -34,11 +36,16 @@ public class App {
 
     public static   int         CACHED_CHECK_INITIAL     = 30;        ///定义开始周期检查缓存的时间，单位：秒
 
+    public static   int         REDIS_MODIFY_NUMBER      = 0;         ///键值对对象访问次数
+
     public static   String[]    SAVE_PERSISTENCE         = {"60:6"};  ////定义60秒内6次更改时持久化到介质
 
     public static   String      PERSISTENCE_MEDIA        = "db";     ////定义持久化的介质，默认持久化到数据库
 
-    public final static String  REDIS_CONFIG_NAME        = "redis.properties"; // Redis配置文件名称
+    public static final String  REDIS_CONFIG_NAME        = "redis.properties"; // Redis配置文件名称
+
+    public static Map<Long,Long> REDIS_SAVE_MAP          = new HashMap<>();   ////定义持久化的介质，默认持久化到数据库
+
 
 
     /**
@@ -61,5 +68,21 @@ public class App {
         }else{
             PrintUtil.print("采用App代码当中的默认配置.", SystemLog.Level.info);
         }
+        preprocessing(); ///处理持久化策略
     }
+
+    /**
+     * 持久化到存储介质预处理方法
+     */
+    public static void preprocessing(){
+        String[] stateges = App.SAVE_PERSISTENCE;
+        Long max =  Long.MIN_VALUE;
+        for(String str : stateges){
+            String[] tmp = str.split(":");
+            REDIS_SAVE_MAP.put(Long.valueOf(tmp[0]),Long.valueOf(tmp[1]));
+            max = Long.valueOf(tmp[1]) > max ? Long.valueOf(tmp[1]) : max;
+        }
+        REDIS_SAVE_MAP.put(Long.MAX_VALUE, max);
+    }
+
 }

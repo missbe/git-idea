@@ -47,7 +47,6 @@ public class RedisServer {
         App.loadRedisConfig();
 
         TaskScheduleExecutor.startTaskScheduleExecutor();////开启缓存淘汰任务
-        PrintUtil.print("缓存定时移除任务开启..", SystemLog.Level.info);
     }
 
     public static void main(String[] args) throws IOException {

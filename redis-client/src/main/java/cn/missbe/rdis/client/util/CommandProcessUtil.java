@@ -1,7 +1,7 @@
 package cn.missbe.rdis.client.util;
 
 public class CommandProcessUtil {
-    private final static String[] commands = {"set","lset", "hset", "get", "del", "time"};
+    private final static String[] commands = {"set","lset", "hset", "get", "del", "expire"};
 
     public static boolean checkCommand(String command){
 
@@ -13,6 +13,7 @@ public class CommandProcessUtil {
         ///根据命令类型判断命令是否正确
         switch(commands[0].toLowerCase()){
             case "set":
+            case "expire":
                 return commands.length == 3 && isCommand(commands[0]);
             case "lset":
             case "hset":

@@ -1,7 +1,8 @@
 ## java-redis实现redis缓存的部分功能
 ### 命令选项
  + set key vlue：键值对都为字符串
- + set key value1 value2 value3：键为字符串，值为list集合
+ + expire key  1000：设置key的过期时间（单位：秒），ever表示永不过期
+ + lset key value1 value2 value3：键为字符串，值为list集合
 + hset key value：键为字符串，值为set集合
 + get key：返回key对应的值
 

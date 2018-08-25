@@ -5,10 +5,9 @@ import cn.missbe.redis.App;
 public class KeyValueNode {
     private String  value;    //键对应的值
     private long    timeOut;  //过期时间
-    private boolean isTimeout;//是否过期
 
     KeyValueNode(String value) {
-        timeOut = System.currentTimeMillis() + App.TIMEOUT;
+        timeOut = nowSystemMills() + App.TIMEOUT * 1000; ///当前时间毫秒数加上缓存毫秒时间
         this.value = value;
     }
 
@@ -17,12 +16,24 @@ public class KeyValueNode {
     }
 
     boolean isTimeout() {
-        isTimeout = System.currentTimeMillis() - timeOut > 0;
-        return isTimeout;
+//        System.out.println(nowSystemMills() + "-" + timeOut + "=" + (nowSystemMills() - timeOut));
+//        System.out.println(DateUtil.nowTimeInMillis() + "-" + timeOut + "=" + (DateUtil.nowTimeInMillis() - timeOut));
+//        System.out.println(new Date().getTime() + "-" + timeOut + "=" + (new Date().getTime() - timeOut));
+
+        //是否过期
+        return nowSystemMills() - timeOut > 0;
     }
 
-    public void setTimeout(boolean timeout) {
-        isTimeout = timeout;
+    /**
+     * 获取当前系统时间毫秒数
+     * @return 系统时间毫秒数
+     */
+    private long nowSystemMills(){
+        return System.currentTimeMillis();
+    }
+
+    void setTimeOut(long timeOut) {
+        this.timeOut = timeOut;
     }
 
     @Override
