@@ -1,9 +1,9 @@
 ## java-redis实现redis缓存的部分功能
 ### 命令选项
  + set key vlue：键值对都为字符串
- + set key value1 value2 value3：键为字符串，值为list集合
-+ hset key value：键为字符串，值为set集合
-+ get key：返回key对应的值
+ + lset key value1 value2 value3：键为字符串，值为list集合
+ + hset key value：键为字符串，值为set集合
+ + get key：返回key对应的值
 
 ### 通信实现
 
