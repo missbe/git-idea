@@ -14,40 +14,40 @@ import java.sql.Connection;
  *   @Description
  **/
 
-public class PooledConnection {
-    Connection connection = null; ///数据库连接
-    boolean busy = false; ///该连接是否正使用
+class PooledConnection {
+    Connection connection ; ///数据库连接
+    private boolean busy = false; ///该连接是否正使用
 
     ////根据一个Connection构造一个PooledConnection
-    public PooledConnection(Connection connection) {
+    PooledConnection(Connection connection) {
         this.connection = connection;
     }
 
     /**
      * 获取该连接对象
     **/
-    public Connection getConnection() {
+    Connection getConnection() {
         return connection;
     }
 
     /**
      * 设置该连接
      */
-    public void setConnection(Connection connection) {
+    void setConnection(Connection connection) {
         this.connection = connection;
     }
 
     /**
      * 该连接是否空闲
      **/
-    public boolean isBusy() {
+    boolean isBusy() {
         return busy;
     }
 
     /**
      * 设置该连接是否空闲
      **/
-    public void setBusy(boolean busy) {
+    void setBusy(boolean busy) {
         this.busy = busy;
     }
 }

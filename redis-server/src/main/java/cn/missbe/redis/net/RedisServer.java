@@ -58,6 +58,7 @@ public class RedisServer {
         ////初始化运行环境
         redisServer.initalEnvironmental();
 
+        //noinspection InfiniteLoopStatement
         while (true){
             Socket socket = redisServer.getServerSocket().accept();
             new Thread(new RedisServerThread(socket)).start();

@@ -26,20 +26,16 @@ public class ConnectionPoolFactory {
         PropertiesUtil.reloadPropes();
         HashMap<String, String> propes = PropertiesUtil.getDbProps();
 
-//        System.out.println("DB Properties" + propes);
-
         String jdbcDriver = propes.get(App.JDBC_DRIVER);
         String dbUrl = propes.get(App.DB_URL);
         String userName = propes.get(App.DB_USERNAME);
         String password = propes.get(App.DB_PASSWORD);
 
-//        System.out.println(jdbcDriver + "--" + dbUrl);
-
         connectionPool = new ConnectionPool(jdbcDriver, dbUrl, userName, password);
     }
 
 
-    public static Connection getConnection() throws SQLException {
+    static Connection getConnection() throws SQLException {
         return connectionPool.getConnection();
     }
 

@@ -17,24 +17,23 @@ import java.util.Properties;
  *   mail: love1208tt@foxmail.com
  *   Copyright (c) 2018. missbe
  *   This program is protected by copyright laws.
- *   Program Name:resources_search_java
- *   @Date:18-8-13 下午1:16
+ *   Program Name:redisjava
+ *   @Date:18-8-25 下午3:54
  *   @author lyg
  *   @version 1.0
- *   @Description
+ *   @Description  属性工具，读取配置文件
  **/
-
 public class PropertiesUtil {
     private static Properties prop = new Properties();
-    private static HashMap<String, String> dbProps = new HashMap<String, String>();
+    private static HashMap<String, String> dbProps = new HashMap<>();
 
     static {
         initPropes();
     }
     private  PropertiesUtil(){}
 
-    private static Map<String, String> initPropes(){
-        InputStream ios = null;
+    private static void initPropes(){
+        InputStream ios;
         try {
             String path = PropertiesUtil.class.getClassLoader().getResource(App.DB_FILE_NAME).getPath();
 //            System.out.println("DB配置文件路径：" + path);
@@ -52,7 +51,6 @@ public class PropertiesUtil {
             if(key instanceof String && values instanceof String)
                 dbProps.put((String)key, (String)values);
         }
-        return dbProps;
     }
 
     public static void reloadPropes(){

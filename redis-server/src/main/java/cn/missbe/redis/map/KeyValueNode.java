@@ -12,20 +12,11 @@ public class KeyValueNode {
         this.value = value;
     }
 
-    void setValue(String value) {
-        this.value = value;
-    }
-
-
-    public long getTimeOut() {
-        return timeOut;
-    }
-
     String getValue() {
         return  value ;
     }
 
-    public boolean isTimeout() {
+    boolean isTimeout() {
         isTimeout = System.currentTimeMillis() - timeOut > 0;
         return isTimeout;
     }
