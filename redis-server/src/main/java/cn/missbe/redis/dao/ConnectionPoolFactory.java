@@ -1,6 +1,7 @@
 package cn.missbe.redis.dao;
 
 import cn.missbe.redis.App;
+import cn.missbe.redis.util.PropertiesUtil;
 
 import java.sql.Connection;
 import java.sql.SQLException;

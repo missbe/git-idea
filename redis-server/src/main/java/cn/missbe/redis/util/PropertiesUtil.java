@@ -1,6 +1,8 @@
-package cn.missbe.redis.dao;
+package cn.missbe.redis.util;
 
 import cn.missbe.redis.App;
+import cn.missbe.util.PrintUtil;
+import cn.missbe.util.SystemLog;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -55,6 +57,26 @@ public class PropertiesUtil {
 
     public static void reloadPropes(){
         initPropes();
+    }
+
+    /**
+     * 读取Redis配置文件
+     * @return 返回配置文件的Properties对象
+     */
+    public static Properties readRedisConfig(){
+        String path = PropertiesUtil.class.getClassLoader().getResource(App.REDIS_CONFIG_NAME).getPath();
+        try(
+                InputStream ios = new FileInputStream(path);
+        ) {
+             Properties propes = new Properties();
+             propes.load(ios);
+             return propes;
+        } catch (FileNotFoundException e) {
+            PrintUtil.print("Redis配置文件未找到.." + e.getCause(), SystemLog.Level.error);
+        } catch (IOException e) {
+            PrintUtil.print("Redis配置文件读取失败." + e.getCause(), SystemLog.Level.error);
+        }
+        return null;
     }
 
     public static HashMap<String, String> getDbProps() {

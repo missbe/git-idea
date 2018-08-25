@@ -7,7 +7,7 @@ import java.util.*;
 
 public class RedisMapImpl implements IRedisMap {
     private Map<String, KeyValueNode>            maps     = new HashMap<>();                                ////保存键值对都为字符串
-    private Map<String, ArrayList<KeyValueNode>> listMaps = new HashMap<String, ArrayList<KeyValueNode>>();  ////值为list类型
+    private Map<String, ArrayList<KeyValueNode>> listMaps = new HashMap<String, ArrayList<KeyValueNode>>(); ////值为list类型
     private Map<String, HashSet<KeyValueNode>>   setMaps  = new HashMap<String, HashSet<KeyValueNode>>();  ////值为set类型
 
 
