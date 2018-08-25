@@ -27,8 +27,6 @@ class ConnectionPool {
 
     private String dbPassword;        // 数据库用户密码
 
-    private int initialConnections      = 5;   ///初始连接数目
-
     private int incrementalConnections  = 5;   //连接池自动增加的大小
 
     private int maxConnections          = 800; // 连接池最大的大小
@@ -37,7 +35,7 @@ class ConnectionPool {
 
 
 
-    public ConnectionPool(String jdbcDriver, String dbUrl, String dbUsername, String dbPassword) {
+    ConnectionPool(String jdbcDriver, String dbUrl, String dbUsername, String dbPassword) {
         this.jdbcDriver = jdbcDriver;
         this.dbUrl = dbUrl;
         this.dbUsername = dbUsername;
@@ -61,7 +59,7 @@ class ConnectionPool {
     /**
      * 创建数据库连接池，连接池初始数量由initialConnections确定
      **/
-    private synchronized void createPool() throws ClassNotFoundException, SQLException, IllegalAccessException, InstantiationException {
+    private synchronized void createPool() throws ClassNotFoundException, SQLException {
         if(connections != null){
             return; ///如果已经创建了连接池，返回这个连接池
         }
@@ -70,9 +68,11 @@ class ConnectionPool {
 //        DriverManager.registerDriver(driver); ///注册驱动
 
         Class.forName(this.jdbcDriver);
-        connections = new ArrayList();
+        connections = new ArrayList<>();
         ////根据initialConnections创建连接数目
-        createConnection(this.initialConnections);
+        ///初始连接数目
+        int initialConnections = 5;
+        createConnection(initialConnections);
     }
 
     /**
@@ -142,9 +142,10 @@ class ConnectionPool {
         return connection;
     }
 
-    private Connection findFreeConnection() {
+
+     private Connection findFreeConnection() {
         Connection connection = null;
-        PooledConnection pConn = null;
+        PooledConnection pConn;
         ///获得连接池所有连接
         Iterator iterator = connections.iterator();
         ///遍历所有连接，查找可用连接
@@ -179,7 +180,7 @@ class ConnectionPool {
     private boolean testConnection(Connection connection) {
         try {
             String testTable = App.TESTTABLE;
-            if(testTable.equals("")){
+            if("".equals(testTable)){
                 connection.setAutoCommit(true);
             }else{
                 Statement stmt = connection.createStatement();
@@ -196,13 +197,13 @@ class ConnectionPool {
      * 将指定数据库连接对象返回到连接池，下次可以重用
      *@param connection 要返回连接池的连接
      */
-    public void returnConnection(Connection connection){
+    void returnConnection(Connection connection){
         ///确保连接池存在
         if(connections  == null){
             System.out.println("连接池不存在，无法返回连接！");
             return;
         }
-        PooledConnection pConn = null;
+        PooledConnection pConn;
         Iterator iterator =connections.iterator();
         while (iterator.hasNext()){
             pConn = (PooledConnection)iterator.next();
@@ -216,14 +217,14 @@ class ConnectionPool {
     /**
      * 刷新当前连接池里面的所有连接
      **/
-    public synchronized void refreshConnection() throws SQLException {
+    synchronized void refreshConnection() throws SQLException {
         ///确保连接池存在
         if(connections  == null){
             System.out.println("连接池不存在，无法返回连接！");
             return;
         }
         Iterator iterator = this.connections.iterator();
-        PooledConnection pConn = null;
+        PooledConnection pConn;
         while (iterator.hasNext()){
             pConn = (PooledConnection)iterator.next();
             if (pConn.isBusy()){
@@ -238,7 +239,7 @@ class ConnectionPool {
     /**
      * 关闭连接池中所有的连接，并清空连接池。
      */
-    public synchronized void closeConnectionPool() throws SQLException {
+    synchronized void closeConnectionPool() throws SQLException {
 
         // 确保连接池存在，如果不存在，返回
         if (connections == null) {
@@ -247,7 +248,6 @@ class ConnectionPool {
         }
 
         for (PooledConnection pConn : this.connections){
-            pConn = (PooledConnection)pConn;
             if (pConn.isBusy()){
                 wait(5000);
             }///当前连接不空闲，等待5秒
