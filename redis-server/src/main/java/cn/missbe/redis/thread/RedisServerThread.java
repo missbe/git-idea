@@ -12,10 +12,10 @@ import java.io.PrintStream;
 import java.net.Socket;
 
 public class RedisServerThread implements Runnable {
-    private Socket socket;                       ///定义当前线程所处理的Socket
-    private BufferedReader bufferedReader;      ///该线程对应的输入流
-    private PrintStream printStream;            ///该线程对应的输出流
-    private boolean isClose         = false;   ///标记该线程是否应该关闭
+    private Socket          socket;                    ///定义当前线程所处理的Socket
+    private BufferedReader  bufferedReader;           ///该线程对应的输入流
+    private PrintStream     printStream;             ///该线程对应的输出流
+    private boolean         isClose         = false; ///标记该线程是否应该关闭
 
     public RedisServerThread(Socket socket) throws IOException {
         this.socket = socket;
@@ -30,17 +30,18 @@ public class RedisServerThread implements Runnable {
         String content;
         while((content = readFromClient()) != null){
             PrintUtil.print("command:" + content, SystemLog.Level.info);
-
+            ////客户端关闭，关闭当前线程
             if(content.equalsIgnoreCase("quit")){
                 Thread.currentThread().interrupt(); //close thread
             }
-
+            ////检查客户端命令格式是否正确
             if(!CommandProcessUtil.checkCommand(content)){
                 printStream.println("提示:命令格式不正确.请检查!");
                 continue; ///命令格式不正确
             }
-
+            ////执行客户端发送的命令
             printStream.println("Result:" + CommandProcessUtil.processCommand(content));
+            ///异常关闭当前线程
             if(isClose){
                 Thread.currentThread().interrupt(); ///close thread
             }

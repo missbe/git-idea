@@ -15,7 +15,7 @@ public class TaskScheduleExecutor {
     public static void startTaskScheduleExecutor(){
         int corePoolSize = 2;
         ScheduledExecutorService service = Executors.newScheduledThreadPool(corePoolSize);
-        service.scheduleAtFixedRate(new CachedTimerTask(),App.CACHED_CHECK_INITIAL, App.CACHED_CHECK_PERIOD, TimeUnit.SECONDS);
+        service.scheduleWithFixedDelay(new CachedTimerTask(),App.CACHED_CHECK_INITIAL, App.CACHED_CHECK_PERIOD, TimeUnit.SECONDS);
     }
 
 }

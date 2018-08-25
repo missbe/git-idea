@@ -2,49 +2,40 @@ package cn.missbe.redis.map;
 
 import cn.missbe.redis.App;
 
-import java.util.List;
-
 public class KeyValueNode {
-    private Object value;   //键对应的值
-    private int hit;        //命中数
-    private long timeOut;  //过期时间
+    private String  value;    //键对应的值
+    private long    timeOut;  //过期时间
+    private boolean isTimeout;//是否过期
 
-    KeyValueNode() {
-        hit = 0;
+    KeyValueNode(String value) {
         timeOut = System.currentTimeMillis() + App.TIMEOUT;
-    }
-
-    void setValue(Object value) {
         this.value = value;
     }
 
-    int getHit() {
-        return hit;
+    void setValue(String value) {
+        this.value = value;
     }
 
-    void setHit(int hit) {
-        this.hit = hit;
-    }
 
     public long getTimeOut() {
         return timeOut;
     }
 
-    @SuppressWarnings("unchecked")
     String getValue() {
-         StringBuilder builder = new StringBuilder();
-        if(value instanceof  String){
-            builder.append((String)value);
-        }else if(value instanceof List){
-            ////泛型擦除，不能判断List里面的具体类型
-            for (String tmp : (List<String>)value)
-                builder.append(tmp);
-        }
-        return  builder.toString() ;
+        return  value ;
     }
 
-//    @Override
-//    public String toString() {
+    public boolean isTimeout() {
+        isTimeout = System.currentTimeMillis() - timeOut > 0;
+        return isTimeout;
+    }
+
+    public void setTimeout(boolean timeout) {
+        isTimeout = timeout;
+    }
+
+    @Override
+    public String toString() {
 //        StringBuilder builder = new StringBuilder();
 //        if(value instanceof  String){
 //            builder.append((String)value);
@@ -53,6 +44,6 @@ public class KeyValueNode {
 //            for (String tmp : (List<String>)value)
 //                builder.append(tmp);
 //        }
-//        return  builder.toString() ;
-//    }
+        return  value ;
+    }
 }

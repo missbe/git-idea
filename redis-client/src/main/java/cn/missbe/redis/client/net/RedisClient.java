@@ -53,9 +53,9 @@ public class RedisClient {
         RedisClient redisClient = new RedisClient(socket);
         String command ;
         PrintUtil.print(socket.toString() + "客户端初始化成功.", SystemLog.Level.info);
+        Scanner scanner = new Scanner(System.in);
         while(true){
            System.out.println("Please Input Command:");
-           Scanner scanner = new Scanner(System.in);
            command = scanner.nextLine();
 
            ////退出客户端
@@ -65,7 +65,7 @@ public class RedisClient {
             }
             ////检查命令格式是否正确
            if(!CommandProcessUtil.checkCommand(command)){
-               System.out.println("命令格式不正确,请检查!");
+               System.out.println("客户端：命令格式不正确,请检查.");
                continue;
            }
            ///发送命令，得到回复
