@@ -1,3 +1,5 @@
+import cn.missbe.redis.slave.App;
+import cn.missbe.redis.slave.dao.IRedisMapDao;
 import cn.missbe.util.DateUtil;
 import org.junit.Test;
 
@@ -25,6 +27,13 @@ public class TestClass {
         System.out.println(o instanceof  List);
     }
 
+    @Test
+    public void testpath(){
+        String path = TestClass.class.getResource(App.REDIS_CONFIG_NAME).getPath();
+
+        System.out.println(path.substring(0,path.lastIndexOf("/")+1));
+        System.out.println(IRedisMapDao.class.getClassLoader().getResource(App.REDIS_CONFIG_NAME).getPath());
+    }
     @Test
     public void testInetAddress() throws IOException {
 //        String ip = "127.0.0.1";
