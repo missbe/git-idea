@@ -11,6 +11,7 @@
     <modules>
         <module>redis-server</module>
         <module>redis-client</module>
+        <module>redis-slave</module>
     </modules>
 
     <dependencies>
