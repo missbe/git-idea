@@ -98,9 +98,7 @@ public class App {
         for(String str : stateges){
             String[] tmp = str.split(":");
             REDIS_SAVE_MAP.put(Long.valueOf(tmp[0]),Long.valueOf(tmp[1]));
-            max = Long.valueOf(tmp[1]) > max ? Long.valueOf(tmp[1]) : max;
         }
-        REDIS_SAVE_MAP.put(Long.MAX_VALUE, max);
-    }
+    }///end process
 
 }

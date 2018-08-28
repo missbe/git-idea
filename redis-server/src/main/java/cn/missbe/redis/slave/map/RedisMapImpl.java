@@ -24,7 +24,6 @@ public class RedisMapImpl implements IRedisMap {
     private volatile Map<String, ArrayList<KeyValueNode>> listMaps = new HashMap<String, ArrayList<KeyValueNode>>();  ////值为list类型
     private volatile Map<String, HashSet<KeyValueNode>>   setMaps  = new HashMap<String, HashSet<KeyValueNode>>();  ////值为set类型
 
-
     /**
      * 私有构造函数，单例化
      */
@@ -123,6 +122,7 @@ public class RedisMapImpl implements IRedisMap {
         }
         return  msg;
     }
+
     /**
      * 键对象为String，值对象为Set类型的Map删除指定Key-Value
      * @param key 指定的key
@@ -185,7 +185,6 @@ public class RedisMapImpl implements IRedisMap {
         }
         return "OK";
     }
-
 
     /**
      * 查找指定key的值
@@ -299,34 +298,116 @@ public class RedisMapImpl implements IRedisMap {
      * 将所有缓存的键值对象包装成List<RedisBean>写入数据库
      * @return 结果集对象
      */
-    public List<RedisBean> listRedisBean(){
+    public List<RedisBean> allMaps2RedisBean(){
+        List<RedisBean> beans = new ArrayList<>();
+        beans.addAll(maps2RedisBean("main:"));
+        beans.addAll(listMaps2RedisBean("list:"));
+        beans.addAll(setMaps2RedisBean("set:"));
+        return beans;
+    }
+
+
+    /**
+     * 将Map<String,keyValueNode>格式的键值对数据转换为List<RedisBean>形式
+     * @param preffix 指定在键前面添加的前缀
+     * @return 结果List<RedisBean>对象
+     */
+    public List<RedisBean> maps2RedisBean(String preffix){
         List<RedisBean> beans = new ArrayList<>();
         for(String key : maps.keySet()){
             KeyValueNode valueNode = maps.get(key);
             if(valueNode != null){
-                RedisBean tmp = convertRedisBean(key, valueNode.getTimeOut(), valueNode.getValue());
+                RedisBean tmp = convertRedisBean(preffix + key, valueNode.getTimeOut(), valueNode.getValue());
                 beans.add(tmp);
             }
         }///end maps;
+        return beans;
+    }
 
-        for(String key : listMaps.keySet()){
-            for(KeyValueNode valueNode : listMaps.get(key)){
-                if(valueNode != null){
-                    RedisBean tmp = convertRedisBean(key, valueNode.getTimeOut(), valueNode.getValue());
-                    beans.add(tmp);
-                }
-            }
-        }///end listMaps
+    /**
+     * 将Map<String,Set<keyValueNode>>格式的键值对数据转换为List<RedisBean>形式
+     * @param preffix 指定在键前面添加的前缀
+     * @return 结果List<RedisBean>对象
+     */
+    public List<RedisBean> setMaps2RedisBean(String preffix){
+        List<RedisBean> beans = new ArrayList<>();
 
         for(String key : setMaps.keySet()){
             for(KeyValueNode valueNode : setMaps.get(key)){
                 if(valueNode != null){
-                    RedisBean tmp = convertRedisBean(key, valueNode.getTimeOut(), valueNode.getValue());
+                    RedisBean tmp = convertRedisBean(preffix + key, valueNode.getTimeOut(), valueNode.getValue());
                     beans.add(tmp);
                 }
             }
         }///end setMaps
         return beans;
+    }
+
+    /**
+     * 将Map<String,List<keyValueNode>>格式的键值对数据转换为List<RedisBean>形式
+     * @param preffix 指定在键前面添加的前缀
+     * @return 结果List<RedisBean>对象
+     */
+    public List<RedisBean> listMaps2RedisBean(String preffix){
+        List<RedisBean> beans = new ArrayList<>();
+
+        for(String key : listMaps.keySet()){
+            for(KeyValueNode valueNode : listMaps.get(key)){
+                if(valueNode != null){
+                    RedisBean tmp = convertRedisBean(preffix + key, valueNode.getTimeOut(), valueNode.getValue());
+                    beans.add(tmp);
+                }
+            }
+        }///end listMaps
+        return beans;
+    }
+
+    /**
+     * 获取Map<String,KeyValueNode>对象的副本
+     * @return 副本对象
+     */
+    public Map<String,KeyValueNode> copyOfMaps(){
+        Map<String,KeyValueNode> copyMaps  = new HashMap<>();
+        for(String key : maps.keySet()){
+            String copyKey = new String(key); ///得到副本对象
+            KeyValueNode copyValue = maps.get(key).copyOf(); ///得到副本对象
+            copyMaps.put(copyKey, copyValue);
+        }
+        return copyMaps;
+    }
+
+    /**
+     * 获取Map<String,Set<KeyValueNode>>对象的副本
+     * @return 副本对象
+     */
+    public Map<String,List<KeyValueNode>> copyOfListMaps(){
+        Map<String,List<KeyValueNode>> copyMaps  = new HashMap<>();
+        for(String key : listMaps.keySet()){
+            String copyKey = new String(key); ///得到副本对象
+            List<KeyValueNode> copyList = new ArrayList<>();
+            for(KeyValueNode valueNode : listMaps.get(key)){
+                copyList.add(valueNode.copyOf());
+            }
+            copyMaps.put(copyKey, copyList);
+        }
+        return copyMaps;
+    }
+
+    /**
+     * 获取Map<String,Set<KeyValueNode>>对象的副本
+     * @return 副本对象
+     */
+    public Map<String,Set<KeyValueNode>> copyOfSetMaps(){
+        Map<String,Set<KeyValueNode>> copyMaps  = new HashMap<>();
+        for(String key : setMaps.keySet()){
+            String copyKey = new String(key); ///得到副本对象
+            Set<KeyValueNode> copySets = new HashSet<>();
+            for(KeyValueNode valueNode : setMaps.get(key)){
+                copySets.add(valueNode.copyOf());
+            }
+            copyMaps.put(copyKey, copySets);
+        }
+        return copyMaps;
     }
 
     /**
@@ -343,6 +424,7 @@ public class RedisMapImpl implements IRedisMap {
         redisBean.setTimeout(timeout);
         return redisBean;
     }
+
     @Override
     public String toString() {
         return "maps=" + maps;

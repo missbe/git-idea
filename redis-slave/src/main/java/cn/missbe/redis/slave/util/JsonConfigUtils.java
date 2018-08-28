@@ -36,10 +36,12 @@ public class JsonConfigUtils {
 
         for(int i = 0; i < array.size(); i++){
             JSONObject object = array.getJSONObject(i);
-            String[] ips = new String[2];
-            ips[0] = object.getString("ip");
-            ips[1] = object.getString("port");
-            result.add(ips);
+            if(object.getString("ip") != null && object.getString("port")  != null){
+                String[] ips = new String[2];
+                ips[0] = object.getString("ip");
+                ips[1] = object.getString("port");
+                result.add(ips);
+            }//end  if
         }
 
         return result;

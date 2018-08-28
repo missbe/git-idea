@@ -1,7 +1,7 @@
 [
     {
-      "initial_delay": 30,
-      "period_delay" : 30
+      "initial_delay": 10,
+      "period_delay" : 10
     },
     {"ip": "127.0.0.1",
     "port": "65532"

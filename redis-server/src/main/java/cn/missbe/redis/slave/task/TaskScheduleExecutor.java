@@ -36,10 +36,8 @@ public class TaskScheduleExecutor {
 
         PrintUtil.print("缓存定时持久到存储介质任务开启..", SystemLog.Level.info);
         for(Long key : App.REDIS_SAVE_MAP.keySet()){
-            if(key != Long.MAX_VALUE){
-                service.scheduleAtFixedRate(new CachedDaoTask(), App.CACHED_CHECK_INITIAL, key, TimeUnit.SECONDS );
-            }
-       }//end for
+            service.scheduleAtFixedRate(new CachedDaoTask(App.REDIS_SAVE_MAP.get(key)), App.CACHED_CHECK_INITIAL, key, TimeUnit.SECONDS );
+        }//end for
     }
 
 }

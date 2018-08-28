@@ -1,4 +1,4 @@
-package cn.missbe.redis.thread;
+package cn.missbe.redis.slave.thread;
 
 import cn.missbe.redis.slave.App;
 import cn.missbe.redis.slave.util.FileDaoUtils;
@@ -17,7 +17,7 @@ import java.net.Socket;
  *   Copyright (c) 2018. missbe
  *   This program is protected by copyright laws.
  *   Program Name:redisjava
- *   @Date:18-8-28 上午9:25
+ *   @Date:18-8-28 下午12:36
  *   @author lyg
  *   @version 1.0
  *   @Description
@@ -44,11 +44,16 @@ public class SlaveBackupThread implements Runnable {
 
     @Override
     public void run() {
+        PrintUtil.print("当前线程:." + Thread.currentThread().getName() + "开始数据备份任务.", SystemLog.Level.info);
+
         ps.println("backup"); ///向服务器发送备份命令
+
         try {
             saveResult();
+            PrintUtil.print("当前线程:." + Thread.currentThread().getName() + "数据备份任务完成.", SystemLog.Level.info);
         } catch (IOException e) {
-            PrintUtil.print("该线程备份数据时读取服务器数据发生错误." + e.getMessage(), SystemLog.Level.error);
+            PrintUtil.print("该线程备份数据时读取服务器数据发生错误.关闭该线程" + e.getMessage(), SystemLog.Level.error);
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -57,10 +62,8 @@ public class SlaveBackupThread implements Runnable {
      * @throws IOException 读取服务器发送数据发生IO异常
      */
     private void saveResult() throws IOException {
-
-        FileDaoUtils.setBackFileName(ip);///配置备份文件名字
-
-        FileDaoUtils.savePersistence(IOUtils.parseStream(reader, App.SERVER_OK));
+        ///配置备份文件名字的前缀和解析流
+        FileDaoUtils.savePersistence(IOUtils.parseStream(reader, App.SERVER_OK),ip);
     }///end save
 
 }

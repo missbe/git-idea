@@ -15,7 +15,7 @@ import org.junit.Test;
  *   @Description
  **/
 
-public class IRedisMapDaoImplTest {
+public class IRedisDataDaoImplTest {
     private  static RedisBean bean = new RedisBean();
     static {
         bean.setKey("missbe");
@@ -25,7 +25,7 @@ public class IRedisMapDaoImplTest {
 
     @Test
     public void save() {
-//        IRedisMapDao redisMap = new RedisMapDaoImpl();
+//        IRedisDataDao redisMap = new RedisDataDaoImpl();
 //        boolean isSucc = redisMap.save(bean);
 //        if(isSucc){
 //            System.out.println("插入对象成功.");
@@ -45,7 +45,7 @@ public class IRedisMapDaoImplTest {
 
     @Test
     public void update() {
-        IRedisMapDao redisMap = new RedisMapDaoImpl();
+        IRedisDataDao redisMap = new RedisDataDaoImpl();
         boolean isSucc = redisMap.update(bean);
         if(isSucc){
             System.out.println("插入对象成功.");
@@ -56,7 +56,7 @@ public class IRedisMapDaoImplTest {
 
     @Test
     public void delete() {
-        IRedisMapDao redisMap = new RedisMapDaoImpl();
+        IRedisDataDao redisMap = new RedisDataDaoImpl();
         boolean isSucc =  redisMap.delete(bean);
         if(isSucc){
             System.out.println("插入对象成功.");

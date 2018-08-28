@@ -2,8 +2,8 @@ package cn.missbe.redis.slave.task;
 
 import cn.missbe.redis.slave.App;
 import cn.missbe.redis.slave.dao.FileDaoImpl;
-import cn.missbe.redis.slave.dao.IRedisMapDao;
-import cn.missbe.redis.slave.dao.RedisMapDaoImpl;
+import cn.missbe.redis.slave.dao.IRedisDataDao;
+import cn.missbe.redis.slave.dao.RedisDataDaoImpl;
 import cn.missbe.util.PrintUtil;
 import cn.missbe.util.SystemLog;
 
@@ -20,31 +20,37 @@ import cn.missbe.util.SystemLog;
  **/
 
 public class CachedDaoTask implements Runnable {
-    IRedisMapDao dao       = new RedisMapDaoImpl();
-    IRedisMapDao fileDao   = new FileDaoImpl();
+    private IRedisDataDao dao       = new RedisDataDaoImpl();
+    private IRedisDataDao fileDao   = FileDaoImpl.getInstance();
+    private static long  max_count = Long.MIN_VALUE;
+    private long count;
+
+    CachedDaoTask(Long aLong) {
+        this.count = aLong;
+        max_count = count > max_count ? count : max_count;
+    }
 
     @Override
     public void run() {
-        for(Long mum : App.REDIS_SAVE_MAP.values()){
-            if(App.REDIS_MODIFY_NUMBER >= mum){
+        if(App.REDIS_MODIFY_NUMBER >= count){
 
-                if(App.PERSISTENCE_MEDIA.equalsIgnoreCase("db")){
-                    PrintUtil.print("正在将数据持久化到数据库，当前访问量:" +  App.REDIS_MODIFY_NUMBER, SystemLog.Level.info);
-                    dao.clear();///清除数据库原来的数据
-                    dao.save(); ///持久化所有未过期键值对对象到数据库
-                    break;
-                }else if(App.PERSISTENCE_MEDIA.equalsIgnoreCase("file")){
-                    PrintUtil.print("正在将数据持久化到文件，当前访问量:" +  App.REDIS_MODIFY_NUMBER, SystemLog.Level.info);
-                    fileDao.clear();
-                    fileDao.save();
-                    break;
-                }
+            if(App.PERSISTENCE_MEDIA.equalsIgnoreCase("db")){
+                PrintUtil.print("正在将数据持久化到数据库，当前访问量:" +  App.REDIS_MODIFY_NUMBER, SystemLog.Level.info);
+                dao.clear();///清除数据库原来的数据
+                dao.save(); ///持久化所有未过期键值对对象到数据库
+            }else if(App.PERSISTENCE_MEDIA.equalsIgnoreCase("file")){
+                PrintUtil.print("正在将数据持久化到文件，当前访问量:" +  App.REDIS_MODIFY_NUMBER, SystemLog.Level.info);
+                fileDao.clear();
+                fileDao.save();
             }
-        }///end for
+        }
 
-        if(App.REDIS_MODIFY_NUMBER >= App.REDIS_SAVE_MAP.get(Long.MAX_VALUE)){
+//        for(Long mum : App.REDIS_SAVE_MAP.values()){//
+//        }///end for
+
+        if(App.REDIS_MODIFY_NUMBER >= max_count){
             App.REDIS_MODIFY_NUMBER = 0; ///reset initial 0
-            PrintUtil.print("即将当前访问量清零:" +  App.REDIS_MODIFY_NUMBER, SystemLog.Level.info);
+            PrintUtil.print("即将当前访问量清零:" + App.REDIS_MODIFY_NUMBER + "->" +  App.REDIS_MODIFY_NUMBER, SystemLog.Level.info);
         }
     }
 }
