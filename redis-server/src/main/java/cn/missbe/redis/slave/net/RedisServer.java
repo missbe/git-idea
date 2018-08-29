@@ -63,7 +63,7 @@ public class RedisServer {
     }
 
     public static void main(String[] args) throws IOException {
-        RedisServer redisServer = new RedisServer(65532);
+        RedisServer redisServer = new RedisServer(65531);
         redisServer.bind();
         PrintUtil.print(redisServer.serverSocket.toString() + "服务器初始化成功.", SystemLog.Level.info);
 

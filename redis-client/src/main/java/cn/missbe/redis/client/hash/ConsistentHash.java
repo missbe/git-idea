@@ -11,7 +11,7 @@ import java.util.TreeMap;
  * 一致性Hash算法
  * @param <T> 节点类型
  */
-public class ConsistentHash<T> {
+class ConsistentHash<T> {
 
     /**
      * Hash计算对象，用于自定义hash算法
@@ -33,7 +33,7 @@ public class ConsistentHash<T> {
      * @param numberOfReplicas 复制的节点个数，增加每个节点的复制节点有利于负载均衡
      * @param nodes 节点对象
      */
-    public ConsistentHash(int numberOfReplicas, Collection<T> nodes) {
+    ConsistentHash(int numberOfReplicas, Collection<T> nodes) {
         this(key -> fnv1HashingAlg(key.toString()), numberOfReplicas, nodes);
     }
 
@@ -81,7 +81,7 @@ public class ConsistentHash<T> {
      * @param key 为给定键取Hash，取得顺时针方向上最近的一个虚拟节点对应的实际节点
      * @return 节点对象
      */
-    public T get(Object key) {
+    T get(Object key) {
         ///判断是否为空
         if (circle.isEmpty()) {
             return null;
