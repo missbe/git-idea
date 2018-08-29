@@ -1,5 +1,5 @@
 import cn.missbe.redis.slave.App;
-import cn.missbe.redis.slave.dao.IRedisMapDao;
+import cn.missbe.redis.slave.dao.IRedisDataDao;
 import cn.missbe.util.DateUtil;
 import org.junit.Test;
 
@@ -32,7 +32,7 @@ public class TestClass {
         String path = TestClass.class.getResource(App.REDIS_CONFIG_NAME).getPath();
 
         System.out.println(path.substring(0,path.lastIndexOf("/")+1));
-        System.out.println(IRedisMapDao.class.getClassLoader().getResource(App.REDIS_CONFIG_NAME).getPath());
+        System.out.println(IRedisDataDao.class.getClassLoader().getResource(App.REDIS_CONFIG_NAME).getPath());
     }
     @Test
     public void testInetAddress() throws IOException {

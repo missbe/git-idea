@@ -16,7 +16,7 @@ import java.util.List;
  *   @Description
  **/
 
-public interface IRedisMapDao {
+public interface IRedisDataDao {
     /**
      * 清除数据库中所有键值对对象
      */

@@ -1,7 +1,10 @@
 package cn.missbe.redis.slave.util;
 
+import cn.missbe.redis.slave.dao.FileDaoImpl;
+import cn.missbe.redis.slave.dao.IRedisDateRead;
 import cn.missbe.redis.slave.map.IRedisMap;
 import cn.missbe.redis.slave.map.RedisMapImpl;
+import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -49,16 +52,17 @@ public class CommandProcessUtil {
                 msg = redisMap.expire(commands[1],commands[2].equalsIgnoreCase("ever") ? Long.MAX_VALUE : Long.valueOf(commands[2]));
                 break;
             case "backup":
-                break;
+                IRedisDateRead dateRead = FileDaoImpl.getInstance();
+                return dateRead.read(redisMap);
         }
         return msg.getBytes(StandardCharsets.UTF_8);
     }
 
 
-    public static boolean checkCommand(String commandLine){
+    public static boolean checkCommand(@NotNull String commandLine){
         String[] commands =  commandLine.split(" ");
-        ////命令长度小于等于1不正确
-        if(commands.length <= 1){
+        ////命令长度小于1不正确
+        if(commands.length < 1){
             return false;
         }
         ///根据命令类型判断命令是否正确

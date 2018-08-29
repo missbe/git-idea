@@ -27,6 +27,10 @@ public class KeyValueNode {
         return  value ;
     }
 
+    /**
+     * 判断该对象是否已经过期
+     * @return true表示过期，false表示未过期
+     */
     boolean isTimeout() {
 //        System.out.println(nowSystemMills() + "-" + timeOut + "=" + (nowSystemMills() - timeOut));
 //        System.out.println(DateUtil.nowTimeInMillis() + "-" + timeOut + "=" + (DateUtil.nowTimeInMillis() - timeOut));
@@ -50,8 +54,18 @@ public class KeyValueNode {
         this.timeOut = timeOut;
     }
 
-    public long getTimeOut() {
+    long getTimeOut() {
         return timeOut;
+    }
+
+    /**
+     * 将调用对象复制一个副本，返回该副本
+     * @return 副本对象
+     */
+    public KeyValueNode copyOf(){
+        KeyValueNode copyNode = new KeyValueNode(this.value);
+        copyNode.timeOut = this.timeOut;
+        return  copyNode;
     }
 
     @Override

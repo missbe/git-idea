@@ -1,10 +1,12 @@
 package cn.missbe.redis.slave.util;
 
 import cn.missbe.redis.slave.App;
+import cn.missbe.util.FileUtils;
 import cn.missbe.util.PrintUtil;
 import cn.missbe.util.SystemLog;
 
 import java.io.*;
+import java.util.Objects;
 
 /**
  *   Description:java_code
@@ -19,12 +21,10 @@ import java.io.*;
  **/
 
 public class FileDaoUtils {
-    private static String fileName = "dump.json";
+    private static String path = Objects.requireNonNull(FileDaoUtils.class.getClassLoader().getResource(App.IP_CLUSTER_FILE)).getPath();
 
-    private static File getFile(){
-        String path =  FileDaoUtils.class.getClassLoader().getResource(App.IP_CLUSTER_FILE).getPath();
-        path = path.substring(0, path.lastIndexOf(App.IP_CLUSTER_FILE)+1);
-        fileName = path + fileName;
+    private static File getFile(String fileName){
+        fileName = path.substring(0, path.lastIndexOf(App.IP_CLUSTER_FILE)+1) + fileName;
         File file = new File(fileName);
         if(!file.exists()){
             try {
@@ -36,13 +36,27 @@ public class FileDaoUtils {
         }///end if
         return file;
     }
-    public static void savePersistence(String contents){
-        File file = getFile();
+    public static void savePersistence(String contents,String prefixx){
+        File tmp;
+        try {
+            tmp = File.createTempFile("redis_temp_",".json");
+        } catch (IOException e) {
+           PrintUtil.print("临时文件创建错误，尝试在项目类路径下创建临时文件.", SystemLog.Level.error);
+           tmp = new File(path.substring(0, path.lastIndexOf(App.IP_CLUSTER_FILE)+1) + "tmp.json");
+        }
         try(
-                BufferedWriter buffer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+                BufferedWriter buffer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tmp)))
         ) {
             buffer.write(contents);
             buffer.flush();
+
+//            System.out.println(tmp.getCanonicalPath());///获取临时文件数据
+
+            File file = getFile(prefixx + "_dump.json");
+            FileUtils.copy(tmp,file);///复制文件，通过流
+
+            ///删除临时文件
+            tmp.deleteOnExit();
         } catch (FileNotFoundException e) {
             PrintUtil.print("文件查找失败，请检查文件路径.详情:" + e.getCause(), SystemLog.Level.error);
         } catch (IOException e) {
@@ -50,7 +64,4 @@ public class FileDaoUtils {
         }
     }
 
-    public static void setBackFileName(String ip) {
-        fileName = ip + "_" + fileName;
-    }
 }

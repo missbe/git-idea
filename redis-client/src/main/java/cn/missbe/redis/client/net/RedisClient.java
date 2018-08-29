@@ -1,10 +1,12 @@
-package cn.missbe.redis.slave.client.net;
+package cn.missbe.redis.client.net;
 
-import cn.missbe.rdis.client.util.CommandProcessUtil;
+import cn.missbe.redis.client.util.CommandProcessUtil;
 import cn.missbe.redis.client.App;
+import cn.missbe.redis.client.hash.ConsistentHash;
 import cn.missbe.util.IOUtils;
 import cn.missbe.util.PrintUtil;
 import cn.missbe.util.SystemLog;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -18,18 +20,19 @@ import java.util.Scanner;
  *   Copyright (c) 2018. missbe
  *   This program is protected by copyright laws.
  *   Program Name:redisjava
- *   @Date:18-8-27 下午7:32
+ *   @Date:18-8-29 上午9:22
  *   @author lyg
  *   @version 1.0
  *   @Description
  **/
 
 public class RedisClient {
-    private Socket       socket;
-    private PrintStream  printStream;
-    private BufferedInputStream  reader;
+    private Socket                 socket;
+    private PrintStream            printStream;
+    private BufferedInputStream    reader;
+    private ConsistentHash<String> consistentHash ;
 
-    private RedisClient(Socket socket) throws IOException {
+    private RedisClient(@NotNull Socket socket) throws IOException {
         this.socket = socket;
         reader = new BufferedInputStream(socket.getInputStream());
         printStream = new PrintStream(socket.getOutputStream());
@@ -43,6 +46,7 @@ public class RedisClient {
      * 获取服务器返回的结果集，以字节形式返回
      * @return 结果字符串
      */
+    @NotNull
     private String getResult() {
         try {
 
@@ -52,21 +56,6 @@ public class RedisClient {
         }
 
         return "exit";
-    }
-
-    /**
-     * 关闭socket和与它相关的流
-     */
-    private void close(){
-        try {
-            reader.close();
-            if(socket != null){
-                socket.close();
-            }
-        } catch (IOException e) {
-            PrintUtil.print(socket.toString() + "客户端资源关闭失败！" + e.getLocalizedMessage(), SystemLog.Level.error);
-        }
-        printStream.close();
     }
 
     public static void main(String[] args) throws IOException {
@@ -103,5 +92,20 @@ public class RedisClient {
        }
         redisClient.close(); ///close
         PrintUtil.print(socket.toString() + "终止与服务器连接.", SystemLog.Level.info);
+    }
+
+    /**
+     * 关闭socket和与它相关的流
+     */
+    private void close(){
+        try {
+            reader.close();
+            if(socket != null){
+                socket.close();
+            }
+        } catch (IOException e) {
+            PrintUtil.print(socket.toString() + "客户端资源关闭失败！" + e.getLocalizedMessage(), SystemLog.Level.error);
+        }
+        printStream.close();
     }
 }

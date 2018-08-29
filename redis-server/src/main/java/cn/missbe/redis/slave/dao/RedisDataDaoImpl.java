@@ -22,7 +22,7 @@ import java.util.List;
  *   @Description
  **/
 
-public class RedisMapDaoImpl implements IRedisMapDao {
+public class RedisDataDaoImpl implements IRedisDataDao {
 
     private Connection getConnection(){
         Connection conn = null;
@@ -52,7 +52,7 @@ public class RedisMapDaoImpl implements IRedisMapDao {
     @Override
     public void save() {
         RedisMapImpl redisMap = RedisMapImpl.RedisMapHolder.getInstance();
-        List<RedisBean> list = redisMap.listRedisBean();
+        List<RedisBean> list = redisMap.allMaps2RedisBean();
         if(list != null && list.size() > 0){
             save(list);
         }

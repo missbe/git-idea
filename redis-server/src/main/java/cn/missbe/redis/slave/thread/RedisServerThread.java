@@ -58,7 +58,7 @@ public class RedisServerThread implements Runnable {
 //                if(!socket.isOutputShutdown())
 //                    socket.shutdownOutput(); ///半关闭输出流，告诉客户端输出完成
             } catch (IOException e) {
-                PrintUtil.print("服务器半关闭流失败." + e.getMessage(), SystemLog.Level.error);
+                PrintUtil.print("服务器写数据到流中失败." + e.getMessage(), SystemLog.Level.error);
             }
             ///异常关闭当前线程
             if(isClose){

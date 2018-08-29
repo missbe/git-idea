@@ -2,7 +2,7 @@ package cn.missbe.redis.slave.task;
 
 import cn.missbe.redis.slave.App;
 import cn.missbe.redis.slave.util.JsonConfigUtils;
-import cn.missbe.redis.thread.SlaveBackupThread;
+import cn.missbe.redis.slave.thread.SlaveBackupThread;
 import cn.missbe.util.PrintUtil;
 import cn.missbe.util.SystemLog;
 
@@ -31,6 +31,7 @@ public class SlaveBackupTaskExecutor {
         List<String[]> ipCluster;
         try {
             ipCluster = JsonConfigUtils.getIpCluster();
+            PrintUtil.print("服务器连接加载完成.开始数据备份任务" , SystemLog.Level.info);
         } catch (IOException e) {
             PrintUtil.print("服务器IP信息加载失败，任务调度失败." + e.getMessage(), SystemLog.Level.error);
             return;
