@@ -1,6 +1,7 @@
 package cn.missbe.redis.slave.net;
 
 import cn.missbe.redis.slave.App;
+import cn.missbe.redis.slave.task.TaskScheduleExecutor;
 import cn.missbe.redis.slave.thread.RedisServerThread;
 import cn.missbe.util.PrintUtil;
 import cn.missbe.util.SystemLog;
@@ -58,12 +59,11 @@ public class RedisServer {
     private  void initalEnvironmental(){
         ///加载Redis配置文件
         App.loadRedisConfig();
-
-     //   TaskScheduleExecutor.startTaskScheduleExecutor();////开启缓存淘汰任务和持久化任务
+        TaskScheduleExecutor.startTaskScheduleExecutor();////开启缓存淘汰任务和持久化任务
     }
 
     public static void main(String[] args) throws IOException {
-        RedisServer redisServer = new RedisServer(65531);
+        RedisServer redisServer = new RedisServer(65530);
         redisServer.bind();
         PrintUtil.print(redisServer.serverSocket.toString() + "服务器初始化成功.", SystemLog.Level.info);
 

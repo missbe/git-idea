@@ -62,7 +62,7 @@ public class KeyValueNode {
      * 将调用对象复制一个副本，返回该副本
      * @return 副本对象
      */
-    public KeyValueNode copyOf(){
+    KeyValueNode copyOf(){
         KeyValueNode copyNode = new KeyValueNode(this.value);
         copyNode.timeOut = this.timeOut;
         return  copyNode;
