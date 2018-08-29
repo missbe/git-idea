@@ -1,6 +1,6 @@
 package cn.missbe.redis.client.net;
 
-import cn.missbe.rdis.client.util.CommandProcessUtil;
+import cn.missbe.redis.client.util.CommandProcessUtil;
 import cn.missbe.redis.client.App;
 import cn.missbe.redis.client.hash.ConsistentHash;
 import cn.missbe.util.IOUtils;
