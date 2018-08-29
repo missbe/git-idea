@@ -4,6 +4,7 @@ import cn.missbe.redis.slave.App;
 import cn.missbe.redis.slave.thread.RedisServerThread;
 import cn.missbe.util.PrintUtil;
 import cn.missbe.util.SystemLog;
+import org.jetbrains.annotations.Contract;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -46,6 +47,7 @@ public class RedisServer {
         }
     }
 
+    @Contract(pure = true)
     private ServerSocket getServerSocket() {
         return serverSocket;
     }

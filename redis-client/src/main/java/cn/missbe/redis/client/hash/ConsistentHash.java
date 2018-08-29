@@ -3,8 +3,6 @@ package cn.missbe.redis.client.hash;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -36,16 +34,16 @@ public class ConsistentHash<T> {
      * @param nodes 节点对象
      */
     public ConsistentHash(int numberOfReplicas, Collection<T> nodes) {
-        this(key -> md5HashingAlg(key.toString()), numberOfReplicas, nodes);
+        this(key -> fnv1HashingAlg(key.toString()), numberOfReplicas, nodes);
     }
 
     /**
      * 构造一致性Hash算法对象
-     * @param numberOfReplicas 复制的节点个数，增加每个节点的复制节点有利于负载均衡
      * @param hashFunc         hash算法对象
+     * @param numberOfReplicas 复制的节点个数，增加每个节点的复制节点有利于负载均衡
      * @param nodes            节点对象
      */
-    public ConsistentHash(HashFunction hashFunc, int numberOfReplicas, @NotNull Collection<T> nodes) {
+    private ConsistentHash(HashFunction hashFunc, int numberOfReplicas, @NotNull Collection<T> nodes) {
         this.numberOfReplicas = numberOfReplicas;
         this.hashFunc = hashFunc;
         //初始化节点
@@ -62,7 +60,9 @@ public class ConsistentHash<T> {
      */
     private void add(T node) {
         for (int i = 0; i < numberOfReplicas; i++) {
-            circle.put(hashFunc.hash(node.toString() + i), node);
+            long hash = hashFunc.hash(node.toString() + "&&VirtualNode" +String.valueOf(i));
+            circle.put(hash, node);
+//            System.out.println(node + "->" + hash);
         }
     }
 
@@ -70,9 +70,9 @@ public class ConsistentHash<T> {
      * 移除节点的同时移除相应的虚拟节点
      * @param node 节点对象
      */
-    public void remove(T node) {
+    void remove(T node) {
         for (int i = 0; i < numberOfReplicas; i++) {
-            circle.remove(hashFunc.hash(node.toString() + i));
+            circle.remove(hashFunc.hash(node.toString() + "&&VirtualNode" + String.valueOf(i)));
         }
     }
 
@@ -96,41 +96,38 @@ public class ConsistentHash<T> {
         return circle.get(hash);
     }
 
-    /**
-     * 使用MD5算法
-     * @param key 处理对象key
-     * @return  返回算法结果
-     */
-    private static long md5HashingAlg(@NotNull String key) {
-        MessageDigest md5;
-        try {
-            md5 = MessageDigest.getInstance("MD5");
-            md5.reset();
-            md5.update(key.getBytes());
-            byte[] bKey = md5.digest();
-            return ((long) (bKey[3] & 0xFF) << 24) | ((long) (bKey[2] & 0xFF) << 16) | ((long) (bKey[1] & 0xFF) << 8)| (long) (bKey[0] & 0xFF);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return 01L;
-    }
+//    private static long md5HashingAlg(@NotNull String key) {
+//        MessageDigest md5;
+//        try {
+//            md5 = MessageDigest.getInstance("MD5");
+//            md5.reset();
+//            md5.update(key.getBytes());
+//            byte[] bKey = md5.digest();
+//            return ((long) (bKey[3] & 0xFF) << 24) | ((long) (bKey[2] & 0xFF) << 16) | ((long) (bKey[1] & 0xFF) << 8)| (long) (bKey[0] & 0xFF);
+//        } catch (NoSuchAlgorithmException e) {
+//            e.printStackTrace();
+//        }
+//        return 0l;
+//    }
 
     /**
      * 使用FNV1hash算法
      * @param key 算法处理对象
      * @return 处理结果
      */
-//    private static long fnv1HashingAlg(@NotNull String key) {
-//        final int p = 16777619;
-//        int hash = (int) 2166136261L;
-//        for (int i = 0; i < key.length(); i++)
-//            hash = (hash ^ key.charAt(i)) * p;
-//        hash += hash << 13;
-//        hash ^= hash >> 7;
-//        hash += hash << 3;
-//        hash ^= hash >> 17;
-//        hash += hash << 5;
-//        return hash;
-//    }
+    private static long fnv1HashingAlg(@NotNull String key) {
+        final int p = 16777619;
+        int hash = (int) 2166136261L;
+
+        for (int i = 0; i < key.length(); i++)
+            hash = (hash ^ key.charAt(i)) * p;
+        hash += hash << 13;
+        hash ^= hash >> 7;
+        hash += hash << 3;
+        hash ^= hash >> 17;
+        hash += hash << 5;
+
+        return hash < 0 ? Math.abs(hash) : hash;
+    }
 
 }

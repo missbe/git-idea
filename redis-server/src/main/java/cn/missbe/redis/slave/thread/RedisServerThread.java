@@ -4,6 +4,8 @@ import cn.missbe.redis.slave.App;
 import cn.missbe.redis.slave.util.CommandProcessUtil;
 import cn.missbe.util.PrintUtil;
 import cn.missbe.util.SystemLog;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,7 +32,7 @@ public class RedisServerThread implements Runnable {
     private PrintStream     printStream;         ///该线程对应的输出流
     private boolean         isClose    = false; ///标记该线程是否应该关闭
 
-    public RedisServerThread(Socket socket) throws IOException {
+    public RedisServerThread(@NotNull Socket socket) throws IOException {
         this.socket = socket;
         bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         printStream = new PrintStream(socket.getOutputStream());
@@ -47,7 +49,7 @@ public class RedisServerThread implements Runnable {
             }
             ////检查客户端命令格式是否正确
             if(!CommandProcessUtil.checkCommand(content)){
-                printStream.println("服务器提示:命令格式不正确.请检查.");
+                printStream.println("1002");
                 continue; ///命令格式不正确
             }
             ////执行客户端发送的命令
@@ -71,6 +73,7 @@ public class RedisServerThread implements Runnable {
      * 从线程对应的客户端读取输入
      * @return 客户端输入数据
      */
+    @Nullable
     private String readFromClient(){
         try {
             return bufferedReader.readLine();

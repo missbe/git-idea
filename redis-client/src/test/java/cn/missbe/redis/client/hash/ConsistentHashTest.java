@@ -1,5 +1,7 @@
 package cn.missbe.redis.client.hash;
 
+import cn.missbe.redis.client.App;
+import cn.missbe.redis.client.bean.HashBean;
 import cn.missbe.util.PrintUtil;
 import cn.missbe.util.StringUtils;
 import cn.missbe.util.SystemLog;
@@ -8,6 +10,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.zip.CRC32;
 
 /**
  *   Description:java_code
@@ -30,11 +33,11 @@ public class ConsistentHashTest {
     private ConsistentHash<String> stringConsistentHash;
      {
         list = new ArrayList<>();
-        list.add(ip1);
-        list.add(ip2);
         list.add(ip3);
         list.add(ip4);
-        stringConsistentHash = new ConsistentHash<>(16,list);
+        list.add(ip2);
+         list.add(ip1);
+        stringConsistentHash = new ConsistentHash<>(4,list);
     }
 
     @Test
@@ -47,7 +50,7 @@ public class ConsistentHashTest {
         PrintUtil.print( "客户端初始化成功.", SystemLog.Level.info);
         Random random = new Random();
         int num_ip1 = 0, num_ip2 = 0, num_ip3 = 0, num_ip4 = 0;
-        for(int i = 0; i < 100000; i++){
+        for(int i = 0; i < 10; i++){
             String res = stringConsistentHash.get( StringUtils.random(2 + random.nextInt(10) ));
             System.out.println("RESULT:" + res);
             switch (res){
@@ -66,5 +69,24 @@ public class ConsistentHashTest {
             }
         }///end for
         System.out.println(num_ip1 + ":" + num_ip2  + ":" + num_ip3 + ":" + num_ip4);
+    }
+
+    @Test
+    public void crc32(){
+        CRC32 crc32 = new CRC32();
+        Random random = new Random();
+        for(int i = 0; i < 10; i++) {
+            String res = StringUtils.getRandom(2 + random.nextInt(10));
+            crc32.update( res.getBytes());
+            System.out.println(res + ":" +crc32.getValue());
+        }
+    }
+
+    @Test
+    public void testApp(){
+        App.initConfig();
+        for(HashBean bean : App.getHashBeans()){
+            System.out.println(bean);
+        }
     }
 }
