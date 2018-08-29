@@ -1,4 +1,4 @@
-package cn.missbe.redis.slave.client.net;
+package cn.missbe.redis.client.net;
 
 import cn.missbe.util.PrintUtil;
 import cn.missbe.util.SystemLog;
@@ -18,7 +18,7 @@ import java.util.Scanner;
  *   Copyright (c) 2018. missbe
  *   This program is protected by copyright laws.
  *   Program Name:redisjava
- *   @Date:18-8-27 下午7:32
+ *   @Date:18-8-29 上午9:22
  *   @author lyg
  *   @version 1.0
  *   @Description

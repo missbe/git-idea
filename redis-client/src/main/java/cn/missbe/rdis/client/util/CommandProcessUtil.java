@@ -1,9 +1,16 @@
 package cn.missbe.rdis.client.util;
 
+import org.jetbrains.annotations.NotNull;
+
 public class CommandProcessUtil {
     private final static String[] commands = {"set","lset", "hset", "get", "del", "expire"};
 
-    public static boolean checkCommand(String command){
+    /**
+     * 检查格式如:set key value形式的命令串是否合法
+     * @param command 命令字符串
+     * @return 返回值
+     */
+    public static boolean checkCommand(@NotNull String command){
 
         String[] commands =  command.split(" ");
         ////命令长度小于等于1不正确
@@ -31,7 +38,7 @@ public class CommandProcessUtil {
      * @param command 命令字符串
      * @return 该字符串为命令返回true,否则返回false
      */
-    private static boolean isCommand(String command){
+    public static boolean isCommand(String command){
         for(String key : commands){
             if(command.equalsIgnoreCase(key)){
                 return true;
