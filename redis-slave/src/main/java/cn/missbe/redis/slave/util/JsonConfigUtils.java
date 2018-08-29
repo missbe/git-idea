@@ -80,7 +80,7 @@ public class JsonConfigUtils {
         InputStream ios = JsonConfigUtils.class.getClassLoader().getResourceAsStream(App.IP_CLUSTER_FILE);
 
         byte[] buff = new byte[1024];
-        int len = 0;
+        int len;
         StringBuilder res = new StringBuilder();
         while ((len =ios.read(buff)) > 0){
             res.append(new String(buff,0,len));
