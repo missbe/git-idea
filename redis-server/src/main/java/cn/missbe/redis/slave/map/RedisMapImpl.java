@@ -90,6 +90,7 @@ public class RedisMapImpl implements IRedisMap {
                 PrintUtil.print(key + "(Set)对象缓存成功..", SystemLog.Level.info);
                 break;
         }
+
         return msg;
     }
 
@@ -250,9 +251,6 @@ public class RedisMapImpl implements IRedisMap {
         }else{
             msg = "该键值对对象不在缓存中.";
         }
-        ///访问次数加1
-        App.REDIS_MODIFY_NUMBER++;
-
         return msg;
     }
 
@@ -291,7 +289,7 @@ public class RedisMapImpl implements IRedisMap {
                 setIterator.remove();///移除Set中过期缓存对象
                 PrintUtil.print(setEntry.getKey() + "(Set)缓存对象过期-进行主动删除.", SystemLog.Level.warning);
             }
-        }///end setMaps
+        }///end addMaps
     }
 
     /**
@@ -339,7 +337,7 @@ public class RedisMapImpl implements IRedisMap {
                     beans.add(tmp);
                 }
             }
-        }///end setMaps
+        }///end addMaps
         return beans;
     }
 
@@ -428,5 +426,17 @@ public class RedisMapImpl implements IRedisMap {
     @Override
     public String toString() {
         return "maps=" + maps;
+    }
+
+    public void addMaps(Map<String, KeyValueNode> maps) {
+        this.maps.putAll(maps);
+    }
+
+    public void addListMaps(Map<String, ArrayList<KeyValueNode>> listMaps) {
+        this.listMaps.putAll(listMaps);
+    }
+
+    public void addSetMaps(Map<String, HashSet<KeyValueNode>> setMaps) {
+        this.setMaps.putAll(setMaps);
     }
 }

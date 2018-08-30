@@ -3,9 +3,9 @@ package cn.missbe.redis.slave.dao;
 import cn.missbe.redis.slave.map.IRedisMap;
 import cn.missbe.redis.slave.map.KeyValueNode;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  *   Description:java_code
@@ -31,9 +31,9 @@ public interface IRedisDateRead {
     /**
      * 从持久化文件中读取键值对数据，键类型为String，值类型为List<KeyValueNode>
      * @param path 文件路径
-     * @return Map<String, List<KeyValueNode>>结果
+     * @return Map<String, ArrayList<KeyValueNode>>结果
      */
-    Map<String, List<KeyValueNode>> read2list(String path);
+    Map<String, ArrayList<KeyValueNode>> read2list(String path);
 
     /**
      * 从持久化文件中读取键值对数据，键类型为String，值类型为KeyValueNode
@@ -45,7 +45,7 @@ public interface IRedisDateRead {
     /**
      * 从持久化文件中读取键值对数据，键类型为String，值类型为Set<KeyValueNode>
      * @param path 文件路径
-     * @return Set<String, List<KeyValueNode>>结果
+     * @return Map<String, HashSet<KeyValueNode>>结果
      */
-    Map<String, Set<KeyValueNode>> read2Set(String path);
+    Map<String, HashSet<KeyValueNode>> read2Set(String path);
 }

@@ -4,9 +4,7 @@ import cn.missbe.redis.slave.util.PropertiesUtil;
 import cn.missbe.util.PrintUtil;
 import cn.missbe.util.SystemLog;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  *   Description:java_code
@@ -42,25 +40,28 @@ public class App {
     /***
      * Redis配置常量
      */
-    public static   String      DELIMITER                = "%";       ////定义字符串分隔符
+    public static   String      DELIMITER                = "%";       ////定义字符串持久化策略文件中的分隔符
 
-    public static   long        TIMEOUT                  = 1000 * 30; ////定义过期时间,单位：毫秒
+    public static   long        TIMEOUT                  = 1000 * 30; ////定义默认过期时间,单位：毫秒
 
     public static   int         CACHED_CHECK_PERIOD      = 60;        ///定义检查周期检查缓存的时间，单位：秒
 
     public static   int         CACHED_CHECK_INITIAL     = 30;        ///定义开始周期检查缓存的时间，单位：秒
 
-    public static   int         REDIS_MODIFY_NUMBER      = 0;         ///键值对对象访问次数
+    public static   String[]    SAVE_PERSISTENCE         = {"60:6"};  ////默认定义60秒内6次更改时持久化到介质
 
-    public static   String[]    SAVE_PERSISTENCE         = {"60:6"};  ////定义60秒内6次更改时持久化到介质
-
-    public static   String      SAVE_FILENAME            = "dump.txt";  ////定义60秒内6次更改时持久化到介质
+    public static   String      SAVE_FILENAME            = "dump.txt";  ////定义持久策略的配置文件名称
 
     public static   String      PERSISTENCE_MEDIA        = "db";     ////定义持久化的介质，默认持久化到数据库
 
     public static final String  REDIS_CONFIG_NAME        = "redis.properties"; // Redis配置文件名称
 
-    public static Map<Long,Long> REDIS_SAVE_MAP          = new HashMap<>();   ////定义持久化的介质，默认持久化到数据库
+    public static List<RedisSavePersistences> REDIS_SAVE_PERSISTENCES = new ArrayList<>();////保持持久化策略的对象列表
+
+    /**
+     * 服务器采用的端口
+     */
+    public static final int      PORT                    = 65530;
 
 
 
@@ -97,8 +98,64 @@ public class App {
         Long max =  Long.MIN_VALUE;
         for(String str : stateges){
             String[] tmp = str.split(":");
-            REDIS_SAVE_MAP.put(Long.valueOf(tmp[0]),Long.valueOf(tmp[1]));
+            RedisSavePersistences savePersistences = new RedisSavePersistences();
+            savePersistences.modifyNumber = Integer.valueOf(tmp[1]);
+            savePersistences.saveDelayTime = Integer.valueOf(tmp[0]);
+            REDIS_SAVE_PERSISTENCES.add(savePersistences);////难受，不要忘记加这个
         }
     }///end process
+
+    /**
+     * 修改持久化策略计数器,所有计数器访问加1
+     */
+    public static void modifyCounter(){
+        for(RedisSavePersistences  persistences : REDIS_SAVE_PERSISTENCES){
+            persistences.nowCount++;
+        }
+    }
+
+    /**
+     * APP静态类，负责持久化策略保持
+     */
+    public static class RedisSavePersistences{
+        private int saveDelayTime;
+        private int modifyNumber;
+        private int nowCount;
+
+        RedisSavePersistences(){
+            nowCount = 0;
+        }
+
+        public int getSaveDelayTime() {
+            return saveDelayTime;
+        }
+
+        public int getModifyNumber() {
+            return modifyNumber;
+        }
+
+        public int getNowCount() {
+            return nowCount;
+        }
+
+        public void setNowCount(int nowCount) {
+            this.nowCount = nowCount;
+        }
+
+        /**
+         * 当前对象计数器清零
+         */
+        public void clearCounter(){
+            nowCount = 0;
+        }
+
+        /**
+         * 判断是否进行持久化
+         * @return 持久化返回true，否返回false
+         */
+        public boolean isPersistences(){
+            return nowCount > modifyNumber;
+        }
+    }
 
 }

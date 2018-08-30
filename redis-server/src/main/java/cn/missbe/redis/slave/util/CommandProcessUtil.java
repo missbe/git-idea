@@ -1,5 +1,6 @@
 package cn.missbe.redis.slave.util;
 
+import cn.missbe.redis.slave.App;
 import cn.missbe.redis.slave.dao.FileDaoImpl;
 import cn.missbe.redis.slave.dao.IRedisDateRead;
 import cn.missbe.redis.slave.map.IRedisMap;
@@ -39,13 +40,19 @@ public class CommandProcessUtil {
             case "set":
             case "lset":
             case "hset":
+                ////持久化对象计数器加1
+                App.modifyCounter();
                 int length = commands[0].length() + commands[1].length() + 2;
                 msg = redisMap.put(commands[0],commands[1],command.substring(length));
                 break;
             case "get":
+                ////持久化对象计数器加1
+                App.modifyCounter();
                 msg = redisMap.get(commands[1]);
                 break;
             case "del":
+                ////持久化对象计数器加1
+                App.modifyCounter();
                 msg = redisMap.delete(commands[1]);
                 break;
             case "expire":
