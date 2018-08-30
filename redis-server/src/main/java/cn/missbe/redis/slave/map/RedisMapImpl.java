@@ -53,8 +53,8 @@ public class RedisMapImpl implements IRedisMap {
         switch (command){
             case "set":
                 msg = removeListMapKeyValueNode(key);
-
                 tmp = removeSetMapKeyValueNode(key);
+
                 msg = tmp.equals("OK") ? (msg.equals("OK") ? "OK" : msg) : tmp;
 
                 KeyValueNode keyValueNode = new KeyValueNode(valueNode[0]);
