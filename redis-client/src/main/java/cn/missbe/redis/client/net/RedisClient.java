@@ -2,7 +2,6 @@ package cn.missbe.redis.client.net;
 
 import cn.missbe.redis.client.util.CommandProcessUtil;
 import cn.missbe.redis.client.App;
-import cn.missbe.redis.client.hash.ConsistentHash;
 import cn.missbe.util.IOUtils;
 import cn.missbe.util.PrintUtil;
 import cn.missbe.util.SystemLog;
@@ -30,7 +29,6 @@ public class RedisClient {
     private Socket                 socket;
     private PrintStream            printStream;
     private BufferedInputStream    reader;
-    private ConsistentHash<String> consistentHash ;
 
     private RedisClient(@NotNull Socket socket) throws IOException {
         this.socket = socket;
