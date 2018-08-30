@@ -1,6 +1,10 @@
 package cn.missbe.redis.slave.net;
 
 import cn.missbe.redis.slave.App;
+import cn.missbe.redis.slave.dao.FileDaoImpl;
+import cn.missbe.redis.slave.map.KeyValueNode;
+import cn.missbe.redis.slave.map.RedisMapImpl;
+import cn.missbe.redis.slave.task.TaskScheduleExecutor;
 import cn.missbe.redis.slave.thread.RedisServerThread;
 import cn.missbe.util.PrintUtil;
 import cn.missbe.util.SystemLog;
@@ -9,6 +13,9 @@ import org.jetbrains.annotations.Contract;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Map;
 
 /**
  *   Description:java_code
@@ -58,12 +65,30 @@ public class RedisServer {
     private  void initalEnvironmental(){
         ///加载Redis配置文件
         App.loadRedisConfig();
+        TaskScheduleExecutor.startTaskScheduleExecutor();////开启缓存淘汰任务和持久化任务
 
-     //   TaskScheduleExecutor.startTaskScheduleExecutor();////开启缓存淘汰任务和持久化任务
+        ////从持久化文件中加载配置
+        String fileName =  App.PORT + "_" + App.SAVE_FILENAME;
+        Map<String, KeyValueNode> maps = FileDaoImpl.getInstance().read(fileName);
+        Map<String, HashSet<KeyValueNode>> setMaps = FileDaoImpl.getInstance().read2Set(fileName);
+        Map<String, ArrayList<KeyValueNode>> listMaps = FileDaoImpl.getInstance().read2list(fileName);
+        if(maps != null && !maps.isEmpty()){
+            PrintUtil.print("从持久化文件:" + fileName + "加载set命令的缓存数据.", SystemLog.Level.info);
+            RedisMapImpl.RedisMapHolder.getInstance().addMaps(maps);
+        }
+        if(listMaps != null && !listMaps.isEmpty()){
+            PrintUtil.print("从持久化文件:" + fileName + "加载lset命令的缓存数据.", SystemLog.Level.info);
+            RedisMapImpl.RedisMapHolder.getInstance().addListMaps(listMaps);
+        }
+        if(setMaps != null && !setMaps.isEmpty()){
+            PrintUtil.print("从持久化文件:" + fileName + "加载het命令的缓存数据.", SystemLog.Level.info);
+            RedisMapImpl.RedisMapHolder.getInstance().addSetMaps(setMaps);
+        }
+
     }
 
     public static void main(String[] args) throws IOException {
-        RedisServer redisServer = new RedisServer(65532);
+        RedisServer redisServer = new RedisServer(App.PORT);
         redisServer.bind();
         PrintUtil.print(redisServer.serverSocket.toString() + "服务器初始化成功.", SystemLog.Level.info);
 

@@ -49,4 +49,14 @@ public class RedisBean {
 //        redisBean.setTimeout(timeout);
 //        return redisBean;
 //    }
+
+
+    @Override
+    public String toString() {
+        return "RedisBean{" +
+                "key='" + key + '\'' +
+                ", timeout=" + timeout +
+                ", value=" + value +
+                '}';
+    }
 }

@@ -39,7 +39,7 @@ public class RedisDataDaoImpl implements IRedisDataDao {
         String sql = "DELETE  FROM redis";
         Connection conn = getConnection();
        try(
-               PreparedStatement prep = conn.prepareStatement(sql);
+               PreparedStatement prep = conn.prepareStatement(sql)
           ){
            prep.executeUpdate();
 
@@ -75,7 +75,7 @@ public class RedisDataDaoImpl implements IRedisDataDao {
         String sql = "INSERT INTO redis(`key`,value,timeout) VALUES (?, ?, ?)";
         int affect = 0;
         try(
-                PreparedStatement prep = conn.prepareStatement(sql);
+                PreparedStatement prep = conn.prepareStatement(sql)
         ) {
             prep.setString(1, bean.getKey());
             prep.setObject(2, bean.getValue());
@@ -95,7 +95,7 @@ public class RedisDataDaoImpl implements IRedisDataDao {
         String sql = "UPDATE redis SET value=?,timeout=? WHERE `key`=?";
         int affect = 0;
         try(
-                PreparedStatement prep = conn.prepareStatement(sql);
+                PreparedStatement prep = conn.prepareStatement(sql)
         ) {
             prep.setObject(1,bean.getValue());
             prep.setLong(2, bean.getTimeout());
@@ -115,7 +115,7 @@ public class RedisDataDaoImpl implements IRedisDataDao {
         String sql = " DELETE FROM redis WHERE `key`=?";
         int affect = 0;
         try(
-                PreparedStatement prep = conn.prepareStatement(sql);
+                PreparedStatement prep = conn.prepareStatement(sql)
          ) {
             prep.setString(1,bean.getKey());
             affect = prep.executeUpdate();  ///返回更新后的结果

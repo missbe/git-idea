@@ -1,17 +1,5 @@
 package cn.missbe.redis.slave;
 
-/**
- *   Description:java_code
- *   mail: love1208tt@foxmail.com
- *   Copyright (c) 2018. missbe
- *   This program is protected by copyright laws.
- *   Program Name:redisjava
- *   @Date:18-8-27 下午7:32
- *   @author lyg
- *   @version 1.0
- *   @Description
- **/
-
 import cn.missbe.redis.slave.util.JsonConfigUtils;
 import cn.missbe.util.PrintUtil;
 import cn.missbe.util.SystemLog;
@@ -19,7 +7,7 @@ import cn.missbe.util.SystemLog;
 import java.io.IOException;
 
 /**
- * Hello world!
+ * 全局参数量
  *
  */
 public class App 

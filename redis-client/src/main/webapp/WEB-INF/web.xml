@@ -4,4 +4,9 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+
+  <!-- 自定义的启动监听器 -->
+  <listener>
+    <listener-class>cn.missbe.redis.client.listener.InitialListener</listener-class>
+  </listener>
 </web-app>

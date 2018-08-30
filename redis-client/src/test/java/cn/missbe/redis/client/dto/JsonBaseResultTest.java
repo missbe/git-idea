@@ -26,8 +26,5 @@ public class JsonBaseResultTest {
         System.out.println(JSON.toJSONString(baseResult));
 
         baseResult.setResult(res);
-        baseResult.getResult();
-        baseResult.setSuccess(true);
-        baseResult.getResult();
     }
 }

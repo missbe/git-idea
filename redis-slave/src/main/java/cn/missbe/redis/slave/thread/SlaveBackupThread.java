@@ -2,6 +2,7 @@ package cn.missbe.redis.slave.thread;
 
 import cn.missbe.redis.slave.App;
 import cn.missbe.redis.slave.util.FileDaoUtils;
+import cn.missbe.util.DateUtil;
 import cn.missbe.util.IOUtils;
 import cn.missbe.util.PrintUtil;
 import cn.missbe.util.SystemLog;
@@ -10,6 +11,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.Date;
 
 /**
  *   Description:java_code
@@ -24,13 +26,13 @@ import java.net.Socket;
  **/
 
 public class SlaveBackupThread implements Runnable {
-    private String ip;
+    private String preffix;
     private PrintStream ps;
     private BufferedInputStream reader;
 
     public SlaveBackupThread(String ip, String port) {
         try {
-            this.ip =  ip;
+           this.preffix = ip +"_" + port +" _" + DateUtil.formateDateyyyyMM(new Date());
             Socket socket = new Socket(ip, Integer.valueOf(port));
             reader = new BufferedInputStream(socket.getInputStream());
             ps = new PrintStream(socket.getOutputStream());
@@ -63,7 +65,7 @@ public class SlaveBackupThread implements Runnable {
      */
     private void saveResult() throws IOException {
         ///配置备份文件名字的前缀和解析流
-        FileDaoUtils.savePersistence(IOUtils.parseStream(reader, App.SERVER_OK),ip);
+        FileDaoUtils.savePersistence(IOUtils.parseStream(reader, App.SERVER_OK),preffix);
     }///end save
 
 }

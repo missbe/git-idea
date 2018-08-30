@@ -1,11 +1,12 @@
 package cn.missbe.redis.slave.util;
 
 import cn.missbe.redis.slave.App;
-import cn.missbe.util.FileUtils;
 import cn.missbe.util.PrintUtil;
 import cn.missbe.util.SystemLog;
+import org.apache.commons.io.FileUtils;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.Objects;
 
 /**
@@ -50,10 +51,11 @@ public class FileDaoUtils {
             buffer.write(contents);
             buffer.flush();
 
+            FileUtils.write(getFile(prefixx + "_dump.json"), contents, Charset.forName("UTF-8"));
 //            System.out.println(tmp.getCanonicalPath());///获取临时文件数据
 
-            File file = getFile(prefixx + "_dump.json");
-            FileUtils.copy(tmp,file);///复制文件，通过流
+//            File file = getFile(prefixx + "_dump.json");
+//            FileUtils.copyFile(tmp,file);///复制文件
 
             ///删除临时文件
             tmp.deleteOnExit();

@@ -20,37 +20,31 @@ import cn.missbe.util.SystemLog;
  **/
 
 public class CachedDaoTask implements Runnable {
-    private IRedisDataDao dao       = new RedisDataDaoImpl();
-    private IRedisDataDao fileDao   = FileDaoImpl.getInstance();
-    private static long  max_count = Long.MIN_VALUE;
-    private long count;
+    private IRedisDataDao dao       = new RedisDataDaoImpl();///负责写入数据库
+    private IRedisDataDao fileDao   = FileDaoImpl.getInstance();///负责写入文件
+    private App.RedisSavePersistences persistences;  ///负责持久化策略
 
-    CachedDaoTask(Long aLong) {
-        this.count = aLong;
-        max_count = count > max_count ? count : max_count;
+    CachedDaoTask(App.RedisSavePersistences  persistences) {
+        this.persistences = persistences;
     }
 
     @Override
     public void run() {
-        if(App.REDIS_MODIFY_NUMBER >= count){
+
+//        PrintUtil.print("当前" + Thread.currentThread().getName() + "线程-当前访问量:" + persistences.getNowCount(), SystemLog.Level.info);
+        if(persistences.isPersistences()){
 
             if(App.PERSISTENCE_MEDIA.equalsIgnoreCase("db")){
-                PrintUtil.print("正在将数据持久化到数据库，当前访问量:" +  App.REDIS_MODIFY_NUMBER, SystemLog.Level.info);
+                PrintUtil.print(Thread.currentThread().getName() + "线程正在将数据持久化到数据库，当前访问量:" +  persistences.getNowCount(), SystemLog.Level.info);
                 dao.clear();///清除数据库原来的数据
                 dao.save(); ///持久化所有未过期键值对对象到数据库
             }else if(App.PERSISTENCE_MEDIA.equalsIgnoreCase("file")){
-                PrintUtil.print("正在将数据持久化到文件，当前访问量:" +  App.REDIS_MODIFY_NUMBER, SystemLog.Level.info);
+                PrintUtil.print(Thread.currentThread().getName() + "线程正在将数据持久化到文件，当前访问量:" +  persistences.getNowCount(), SystemLog.Level.info);
                 fileDao.clear();
                 fileDao.save();
             }
-        }
-
-//        for(Long mum : App.REDIS_SAVE_MAP.values()){//
-//        }///end for
-
-        if(App.REDIS_MODIFY_NUMBER >= max_count){
-            App.REDIS_MODIFY_NUMBER = 0; ///reset initial 0
-            PrintUtil.print("即将当前访问量清零:" + App.REDIS_MODIFY_NUMBER + "->" +  App.REDIS_MODIFY_NUMBER, SystemLog.Level.info);
-        }
+            PrintUtil.print("将当前访问量清零重新计算:" + persistences.getNowCount()+ " -> 0" , SystemLog.Level.info);
+            persistences.clearCounter(); ////将计数器清零
+        }///end persistence
     }
 }

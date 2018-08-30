@@ -24,12 +24,12 @@ public class JsonBaseResult implements Serializable {
         this.success = success;
     }
 
-    public Object getResult() {
-        return result;
-    }
-
     public void setResult(Object result) {
         this.result = result;
+    }
+
+    public Object getResult() {
+        return result;
     }
 
     public boolean isSuccess() {
@@ -42,7 +42,7 @@ public class JsonBaseResult implements Serializable {
 
     @Override
     public String toString() {
-        if (!this.success) {
+        if (this.success) {
             return result.toString();
         } else {
             return "正常";

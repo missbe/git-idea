@@ -28,15 +28,15 @@ public class TaskScheduleExecutor {
      */
     public static void startTaskScheduleExecutor(){
 
-        int corePoolSize = App.REDIS_SAVE_MAP.size();
+        int corePoolSize = App.REDIS_SAVE_PERSISTENCES.size() + 1;
 
         ScheduledExecutorService service = Executors.newScheduledThreadPool(corePoolSize);
         PrintUtil.print("缓存定时检查移除对象任务开启..", SystemLog.Level.info);
         service.scheduleWithFixedDelay(new CachedTimerTask(), App.CACHED_CHECK_INITIAL, App.CACHED_CHECK_PERIOD, TimeUnit.SECONDS);
 
         PrintUtil.print("缓存定时持久到存储介质任务开启..", SystemLog.Level.info);
-        for(Long key : App.REDIS_SAVE_MAP.keySet()){
-            service.scheduleAtFixedRate(new CachedDaoTask(App.REDIS_SAVE_MAP.get(key)), App.CACHED_CHECK_INITIAL, key, TimeUnit.SECONDS );
+        for(App.RedisSavePersistences  persistences : App.REDIS_SAVE_PERSISTENCES){
+            service.scheduleAtFixedRate(new CachedDaoTask(persistences), App.CACHED_CHECK_INITIAL, persistences.getSaveDelayTime(), TimeUnit.SECONDS );
         }//end for
     }
 

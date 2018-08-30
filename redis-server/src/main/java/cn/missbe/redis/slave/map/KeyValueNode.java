@@ -18,6 +18,9 @@ public class KeyValueNode {
     private String  value;    //键对应的值
     private long    timeOut;  //过期时间
 
+    public KeyValueNode(){
+
+    }
     KeyValueNode(String value) {
         timeOut = nowSystemMills() + App.TIMEOUT * 1000; ///当前时间毫秒数加上缓存毫秒时间
         this.value = value;
@@ -50,7 +53,7 @@ public class KeyValueNode {
         return System.currentTimeMillis();
     }
 
-    void setTimeOut(long timeOut) {
+    public void setTimeOut(long timeOut) {
         this.timeOut = timeOut;
     }
 
@@ -58,11 +61,15 @@ public class KeyValueNode {
         return timeOut;
     }
 
+    public void setValue(String value) {
+        this.value = value;
+    }
+
     /**
      * 将调用对象复制一个副本，返回该副本
      * @return 副本对象
      */
-    public KeyValueNode copyOf(){
+    KeyValueNode copyOf(){
         KeyValueNode copyNode = new KeyValueNode(this.value);
         copyNode.timeOut = this.timeOut;
         return  copyNode;

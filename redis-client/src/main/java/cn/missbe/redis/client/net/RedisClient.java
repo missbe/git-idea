@@ -47,7 +47,6 @@ public class RedisClient {
     @NotNull
     private String getResult() {
         try {
-
             return IOUtils.parseStream(reader, App.SERVER_OK);
         } catch (IOException e) {
             PrintUtil.print("服务器端已经关闭或出现错误.结束访问", SystemLog.Level.error);
