@@ -18,7 +18,7 @@ import java.util.Objects;
  *   @Date:18-8-28 上午11:47
  *   @author lyg
  *   @version 1.0
- *   @Description
+ *   @Description 文件写入工具
  **/
 
 public class FileDaoUtils {

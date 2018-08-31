@@ -22,7 +22,7 @@ import java.util.Date;
  *   @Date:18-8-28 下午12:36
  *   @author lyg
  *   @version 1.0
- *   @Description
+ *   @Description 备份服务线程
  **/
 
 public class SlaveBackupThread implements Runnable {

@@ -1,5 +1,5 @@
-import cn.missbe.redis.slave.App;
-import cn.missbe.redis.slave.dao.IRedisDataDao;
+import cn.missbe.redis.server.App;
+import cn.missbe.redis.server.dao.IRedisDataDao;
 import cn.missbe.util.DateUtil;
 import org.junit.Test;
 

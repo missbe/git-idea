@@ -20,7 +20,7 @@ import java.util.List;
  *   @Date:18-8-27 下午7:36
  *   @author lyg
  *   @version 1.0
- *   @Description
+ *   @Description json格式配置文件处理
  **/
 
 public class JsonConfigUtils {

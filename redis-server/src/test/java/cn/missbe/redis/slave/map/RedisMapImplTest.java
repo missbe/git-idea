@@ -1,5 +1,6 @@
 package cn.missbe.redis.slave.map;
 
+import cn.missbe.redis.server.map.RedisMapImpl;
 import org.junit.Test;
 
 /**

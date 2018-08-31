@@ -15,13 +15,13 @@ import java.util.List;
  *   @Date:18-8-28 上午11:30
  *   @author lyg
  *   @version 1.0
- *   @Description
+ *   @Description 客户端全局常量，设置哈希槽长度和主服务器IP和端口信息
  **/
 
 public class App {
     public static final  String   SERVER_OK      = "SERVER_OK"; //结束写入标志
-    public static final String   IP_SLAVE_FILE  = "slave_ip.json";
-    public static final int      HASH_LENGTH    = 300000; ///哈希槽长度
+    public static final String    IP_SLAVE_FILE  = "slave_ip.json";
+    public static final int       HASH_LENGTH    = 300000; ///哈希槽长度
     private static List<HashBean> hashBeans      = new ArrayList<>(); //客户端保持的全局服务器数据
 
     /**
