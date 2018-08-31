@@ -1,6 +1,7 @@
 package cn.missbe.redis.slave.util;
 
-import cn.missbe.redis.slave.App;
+import cn.missbe.redis.server.App;
+import cn.missbe.redis.server.util.PropertiesUtil;
 import org.junit.Test;
 
 import java.util.Properties;
