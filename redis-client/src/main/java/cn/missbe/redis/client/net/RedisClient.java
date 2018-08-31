@@ -22,7 +22,7 @@ import java.util.Scanner;
  *   @Date:18-8-29 上午9:22
  *   @author lyg
  *   @version 1.0
- *   @Description
+ *   @Description 客户端，负责与主服务器分发命令
  **/
 
 public class RedisClient {

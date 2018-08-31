@@ -1,6 +1,8 @@
 package cn.missbe.redis.slave.dao;
 
-import cn.missbe.redis.slave.bean.RedisBean;
+import cn.missbe.redis.server.dao.IRedisDataDao;
+import cn.missbe.redis.server.dao.RedisDataDaoImpl;
+import cn.missbe.redis.server.bean.RedisBean;
 import org.junit.Test;
 
 /**

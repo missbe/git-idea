@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  *   @Date:18-8-28 上午9:20
  *   @author lyg
  *   @version 1.0
- *   @Description
+ *   @Description 备份任务调度器
  **/
 
 public class SlaveBackupTaskExecutor {

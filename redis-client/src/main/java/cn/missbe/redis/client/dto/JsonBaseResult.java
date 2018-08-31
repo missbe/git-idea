@@ -11,7 +11,7 @@ import java.io.Serializable;
  *   @Date:18-8-29 上午11:34
  *   @author lyg
  *   @version 1.0
- *   @Description
+ *   @Description 传输到网页端的数据对象
  **/
 
 public class JsonBaseResult implements Serializable {

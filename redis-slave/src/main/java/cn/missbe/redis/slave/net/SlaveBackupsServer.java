@@ -19,7 +19,7 @@ import java.net.Socket;
  *   @Date:18-8-28 上午8:53
  *   @author lyg
  *   @version 1.0
- *   @Description
+ *   @Description 备份服务运行入口
  **/
 
 public class SlaveBackupsServer {

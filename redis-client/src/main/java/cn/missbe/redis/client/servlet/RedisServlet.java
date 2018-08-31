@@ -29,7 +29,7 @@ import java.util.zip.CRC32;
  *   @Date:18-8-29 上午10:50
  *   @author lyg
  *   @version 1.0
- *   @Description
+ *   @Description Servlet负责对前台请求校验，发送命令到主服务器
  **/
 @WebServlet(urlPatterns = {"/redis/data/cached"})
 public class RedisServlet extends HttpServlet {
@@ -45,12 +45,10 @@ public class RedisServlet extends HttpServlet {
        String command = req.getParameter("command");
        String key = req.getParameter("key");
        String value = req.getParameter("value");
-       ////对传送到服务器的键数据进行UTF-8编码，以免乱码
-       key  = new String(key.getBytes(StandardCharsets.UTF_8));
 
+//       resp.setContentType("application/json");
 
-       PrintWriter ps = resp.getWriter();
-       resp.setContentType("application/json");
+        PrintWriter ps = resp.getWriter();
         if(command == null || key == null){
             msg = "提示:命令不能为空,请输入命令.";
             ///向前端发送JSON数据
@@ -58,7 +56,11 @@ public class RedisServlet extends HttpServlet {
             ps.flush();
             ps.close();
             return;
-       }
+        }
+
+       ////对传送到服务器的键数据进行UTF-8编码，以免乱码
+       key  = new String(key.getBytes(StandardCharsets.UTF_8));
+
        ////客户端检查命令格式
        boolean isCommand =  CommandProcessUtil.isCommand(command);
        if(!isCommand){

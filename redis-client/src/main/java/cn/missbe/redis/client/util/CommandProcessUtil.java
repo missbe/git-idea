@@ -1,5 +1,6 @@
 package cn.missbe.redis.client.util;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -11,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
  *   @Date:18-8-29 下午12:22
  *   @author lyg
  *   @version 1.0
- *   @Description
+ *   @Description 命令检查，判断命令格式是否正确
  **/
 
 public class CommandProcessUtil {
@@ -50,6 +51,7 @@ public class CommandProcessUtil {
      * @param command 命令字符串
      * @return 该字符串为命令返回true,否则返回false
      */
+    @Contract(pure = true)
     public static boolean isCommand(String command){
         for(String key : commands){
             if(command.equalsIgnoreCase(key)){
