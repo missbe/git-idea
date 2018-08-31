@@ -22,20 +22,21 @@ $('#send').click(function(){
              type: "post",
              url: "/redis/data/cached",
              data: {
-                 	command:arr[0]
+                 	command:$("#command").val(),
              		key   : $("#key").val(), 
              		value : $("#value").val()
              },
              dataType: "json",
              success: function(data){
-             ////处理返回的JSON数据
+                 ////处理返回的JSON数据
+             }             
          });
 });
 ```
 
 ### 后端返回数据格式
 
-```javascript
+```json
 ////返回的数据格式
 {"result":"value1 value2 value3 value4","success":true}
 ```
