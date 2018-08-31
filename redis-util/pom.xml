@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>redis</artifactId>
+        <groupId>cn.missbe.laboratory.redis</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>redis-util</artifactId>
+
+    <name>redis-util</name>
+    <!-- FIXME change it to the project's website -->
+    <url>http://www.example.com</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+    <dependencies>
+        <!-- 日志 begin -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.16</version>
+        </dependency>
+        <!-- 日志 end -->
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- 文档 插件 -->
+            <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-javadoc-plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <configuration>
+                    <aggregate>true</aggregate>
+                    <encoding>${maven.doc.encoding}</encoding>
+                    <charset>${maven.doc.encoding}</charset>
+                    <docencoding>${maven.doc.encoding}</docencoding>
+                    <destDir>doc</destDir>
+                    <tags>
+                        <tag>
+                            <head>描述</head>
+                            <name>Description</name>
+                            <placement>a</placement>
+                        </tag>
+                        <tag>
+                            <head>返回值</head>
+                            <name>return</name>
+                            <placement>a</placement>
+                        </tag>
+                        <tag>
+                            <head>参数</head>
+                            <name>param...</name>
+                            <placement>a</placement>
+                        </tag>
+                        <tag>
+                            <head>时间</head>
+                            <name>date</name>
+                            <placement>a</placement>
+                        </tag>
+                        <tag>
+                            <head>时间</head>
+                            <name>Date</name>
+                            <placement>a</placement>
+                        </tag>
+                    </tags>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadoc</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <!--取消对源码中的doc参数注释等检查-->
+                            <additionalparam>-Xdoclint:none</additionalparam>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 打包源码插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>
