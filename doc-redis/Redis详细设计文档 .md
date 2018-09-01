@@ -2,9 +2,13 @@
 
 ### Redis环境配置
 
- + JDK 1.8
++ JDK 1.8
 + Tomcat 8.0
 + Maven
+
+### Redis分布 式缓存结构图
+
+![redis分布式缓存](redis.png)
 
 ### 一、Redis实现的命令选项
 
@@ -117,7 +121,7 @@
 + 周期更新：周期性定时检查缓存对象是否过期，将过期对象进行移除；
 
   ```java
- 
+   
   ScheduledExecutorService service = Executors.newScheduledThreadPool(corePoolSize);
           PrintUtil.print("缓存定时检查移除对象任务开启..", SystemLog.Level.info);
           service.scheduleWithFixedDelay(new CachedTimerTask(), App.CACHED_CHECK_INITIAL, App.CACHED_CHECK_PERIOD, TimeUnit.SECONDS);
@@ -126,7 +130,7 @@
       public void run() {
           redisMap.clearExpireKey();  ///清理过期缓存对象
       }
- 
+   
   	/**
        * 清除过期缓存对象
        */	
@@ -144,9 +148,7 @@
     }
   ```
 
-  
-
-### 五、持久化策略
+  ### 五、持久化策略
 
 + 根据缓存持久化策略判断是否进行持久化，在 指定的时间范围内缓存数据的访问量是否达到指定值，满足持久化投机条件则执行持久化 ，根据配置文件将数据持久化到数据库或文件，实现代码：
 

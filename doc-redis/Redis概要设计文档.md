@@ -1,4 +1,16 @@
-### Redis概要设计：  
+## <center>Redis概要设计文档</center>
+
+### Redis环境配置
+
++ JDK 1.8
++ Tomcat 8.0
++ Maven
+
+### Redis分布 式缓存结构图
+
+![redis分布式缓存](E:/CODE/java/idea2018/redis/doc-redis/redis.png)
+
+### 
 
 #### 一.实现目标 
 
