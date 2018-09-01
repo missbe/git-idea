@@ -46,7 +46,8 @@ public class RedisServlet extends HttpServlet {
        String key = req.getParameter("key");
        String value = req.getParameter("value");
 
-//       resp.setContentType("application/json");
+       resp.setContentType("application/json");
+       resp.setHeader("Access-Control-Allow-Origin", "*");
 
         PrintWriter ps = resp.getWriter();
         if(command == null || key == null){
