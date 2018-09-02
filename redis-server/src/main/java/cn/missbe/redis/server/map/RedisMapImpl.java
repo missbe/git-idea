@@ -165,7 +165,7 @@ public class RedisMapImpl implements IRedisMap {
      */
     public String expire(String key,long seconds) {
         ///在当前时间上增加mills秒数
-        long mills = seconds == Long.MAX_VALUE ? Long.MAX_VALUE : seconds * 1000 + System.currentTimeMillis();
+        long mills = (seconds == -1) ? -1 : seconds * 1000 + System.currentTimeMillis();
         if(maps.containsKey(key)){
             maps.get(key).setTimeOut(mills);
         }else if(setMaps.containsKey(key)){

@@ -61,7 +61,7 @@ public class App {
     /**
      * 服务器采用的端口
      */
-    public static final int      PORT                    = 65531;
+    public static final int      PORT                    = 65532;
 
 
 

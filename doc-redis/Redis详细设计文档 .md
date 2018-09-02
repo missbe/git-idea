@@ -8,7 +8,7 @@
 
 ### Redis分布 式缓存结构图
 
-![redis分布式缓存](redis.png)
+![redis分布式缓存](img/redis.png)
 
 ### 一、Redis实现的命令选项
 

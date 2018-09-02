@@ -57,7 +57,7 @@ public class FileDaoImpl  implements IRedisDataDao,IRedisDateRead{
     private File createFile(String fileName){
         String path = Objects.requireNonNull(FileDaoImpl.class.getClassLoader().getResource(App.REDIS_CONFIG_NAME)).getPath();
         path = path.substring(0,path.lastIndexOf("/")+1);
-        path += App.PORT + "_" + fileName;
+        path += fileName;
         return new File(path);
     }
 
@@ -69,7 +69,7 @@ public class FileDaoImpl  implements IRedisDataDao,IRedisDateRead{
     }
 
     @Override
-    public void save() {
+    public void save(String fileName) {
         if(isExist()){
             redisFile = createFile(App.SAVE_FILENAME);
         }
@@ -89,9 +89,9 @@ public class FileDaoImpl  implements IRedisDataDao,IRedisDateRead{
     }
 
     @Override
-    public void save(List<RedisBean> beans) {
+    public void save(List<RedisBean> beans,String fileName) {
         if(isExist()){
-            redisFile = createFile(App.SAVE_FILENAME);
+            redisFile = createFile(fileName);
         }
         try {
             if(!redisFile.canWrite()){
@@ -108,10 +108,10 @@ public class FileDaoImpl  implements IRedisDataDao,IRedisDateRead{
     }
 
     @Override
-    public boolean save(RedisBean bean) {
+    public boolean save(RedisBean bean,String fileName) {
         List<RedisBean> redisBeans = new ArrayList<>();
         redisBeans.add(bean);
-        save(redisBeans);
+        save(redisBeans,fileName);
         return false;
     }
 
@@ -161,7 +161,7 @@ public class FileDaoImpl  implements IRedisDataDao,IRedisDateRead{
      * @param fileName 类路径下的文件名称
      */
     private void loadMaps(String fileName){
-        String content  = FileDaoImpl.getInstance().readFromFile(fileName);
+        String content  = readFromFile(fileName);
 
         if(content.equalsIgnoreCase("")){
             return;

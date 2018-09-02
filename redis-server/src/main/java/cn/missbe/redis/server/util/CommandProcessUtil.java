@@ -55,7 +55,7 @@ public class CommandProcessUtil {
                 msg = redisMap.delete(commands[1]);
                 break;
             case "expire":
-                msg = redisMap.expire(commands[1],commands[2].equalsIgnoreCase("ever") ? Long.MAX_VALUE : Long.valueOf(commands[2]));
+                msg = redisMap.expire(commands[1],commands[2].equalsIgnoreCase("ever") ? -1 : Long.valueOf(commands[2]));
                 break;
             case "backup":
                 IRedisDateRead dateRead = FileDaoImpl.getInstance();

@@ -38,7 +38,7 @@ public class KeyValueNode {
 //        System.out.println(nowSystemMills() + "-" + timeOut + "=" + (nowSystemMills() - timeOut));
 //        System.out.println(DateUtil.nowTimeInMillis() + "-" + timeOut + "=" + (DateUtil.nowTimeInMillis() - timeOut));
 //        System.out.println(new Date().getTime() + "-" + timeOut + "=" + (new Date().getTime() - timeOut));
-        if(timeOut == Long.MAX_VALUE){
+        if(timeOut == -1){
             return false;
         }
         //是否过期
