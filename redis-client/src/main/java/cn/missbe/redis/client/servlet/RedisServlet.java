@@ -92,9 +92,21 @@ public class RedisServlet extends HttpServlet {
         ps.close();
 
     }
-    String processServerCommand(HashBean bean, String command) throws IOException {
+    String processServerCommand(HashBean bean, String command) {
+        if(bean == null){
+            return "服务器信息加载失败，哈希槽分布检查.";
+        }
         ////与服务器通信部分
-        Socket socket = new Socket(bean.getIp(), bean.getPort());
+        Socket socket;
+        try {
+            socket = new Socket(bean.getIp(), bean.getPort());
+            bean.setFailCount(0); ///连接失败次数置为0
+        } catch (IOException e) {
+            String msg = "服务器连接失败-可能服务器已经关闭或者请求忙-请过段时间尝试连接";
+            PrintUtil.print(msg, SystemLog.Level.error);
+            bean.setFailCount(bean.getCount()+1);
+            return msg;
+        }
         String msg = null ;
 
         try (        PrintStream ps = new PrintStream(socket.getOutputStream())

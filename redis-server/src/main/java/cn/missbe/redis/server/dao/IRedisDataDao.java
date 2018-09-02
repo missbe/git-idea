@@ -25,20 +25,20 @@ public interface IRedisDataDao {
     /**
      * 保存所有键值对象到数据库中
      */
-    void save();
+    void save(String fileName);
 
     /**
      * 保存List<RedisBean>到数据库中
      * @param beans 指定List
      */
-    void save(List<RedisBean> beans);
+    void save(List<RedisBean> beans, String fileName);
 
     /**
      * 保存指定RedisBean到数据库中
      * @param bean 指定的RedisBean对象
      * @return 持久化是否成功
      */
-    boolean save(RedisBean bean);
+    boolean save(RedisBean bean, String fileName);
 
     /**
      * 更新指定键值对对象

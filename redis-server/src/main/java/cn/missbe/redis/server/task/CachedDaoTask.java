@@ -34,14 +34,15 @@ public class CachedDaoTask implements Runnable {
 //        PrintUtil.print("当前" + Thread.currentThread().getName() + "线程-当前访问量:" + persistences.getNowCount(), SystemLog.Level.info);
         if(persistences.isPersistences()){
 
+            String fileName = App.PORT + "_" + App.SAVE_FILENAME;
             if(App.PERSISTENCE_MEDIA.equalsIgnoreCase("db")){
                 PrintUtil.print(Thread.currentThread().getName() + "线程正在将数据持久化到数据库，当前访问量:" +  persistences.getNowCount(), SystemLog.Level.info);
                 dao.clear();///清除数据库原来的数据
-                dao.save(); ///持久化所有未过期键值对对象到数据库
+                dao.save(fileName); ///持久化所有未过期键值对对象到数据库
             }else if(App.PERSISTENCE_MEDIA.equalsIgnoreCase("file")){
                 PrintUtil.print(Thread.currentThread().getName() + "线程正在将数据持久化到文件，当前访问量:" +  persistences.getNowCount(), SystemLog.Level.info);
                 fileDao.clear();
-                fileDao.save();
+                fileDao.save(fileName);
             }
             PrintUtil.print("将当前访问量清零重新计算:" + persistences.getNowCount()+ " -> 0" , SystemLog.Level.info);
             persistences.clearCounter(); ////将计数器清零

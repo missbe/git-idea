@@ -35,7 +35,7 @@ public class RedisServer {
     private ServerSocket serverSocket;
 
     private RedisServer(int port) {
-       this(port,680);
+       this(port,1000);
     }
 
     private RedisServer(int port, int backlog) {
@@ -88,7 +88,7 @@ public class RedisServer {
     }
 
     public static void main(String[] args) throws IOException {
-        RedisServer redisServer = new RedisServer(App.PORT);
+        RedisServer redisServer = new RedisServer(App.PORT,2000);
         redisServer.bind();
         PrintUtil.print(redisServer.serverSocket.toString() + "服务器初始化成功.", SystemLog.Level.info);
 

@@ -13,10 +13,11 @@ package cn.missbe.redis.client.bean;
  **/
 
 public class HashBean {
-    private String  ip;
-    private int     port;
-    private int     hashStart;
-    private int     hashEnd;
+    private String  ip;  ///服务器IP
+    private int     port; ///服务器端口
+    private int     hashStart; ///哈希开始
+    private int     hashEnd; ///哈希结束
+    private int     failCount; ///连接失败次数
 
     private  int count = 0;
 
@@ -52,6 +53,14 @@ public class HashBean {
         this.hashEnd = hashEnd;
     }
 
+    public int getFailCount() {
+        return failCount;
+    }
+
+    public void setFailCount(int failCount) {
+        this.failCount = failCount;
+    }
+
     /**
      * 判断当前hash值是否应该在这个区段
      * @param hash hash位置
@@ -68,6 +77,7 @@ public class HashBean {
                 ", port=" + port +
                 ", hashStart=" + hashStart +
                 ", hashEnd=" + hashEnd +
+                ", failCount=" + failCount +
                 ", count=" + count +
                 '}';
     }

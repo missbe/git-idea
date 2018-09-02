@@ -50,26 +50,26 @@ public class RedisDataDaoImpl implements IRedisDataDao {
     }
 
     @Override
-    public void save() {
+    public void save(String fileName) {
         RedisMapImpl redisMap = RedisMapImpl.RedisMapHolder.getInstance();
         List<RedisBean> list = redisMap.allMaps2RedisBean();
         if(list != null && list.size() > 0){
-            save(list);
+            save(list,fileName);
         }
     }
 
     @Override
-    public void save(List<RedisBean> beans) {
+    public void save(List<RedisBean> beans,String fileName) {
         int suc = 0;
         for (RedisBean bean : beans){
-            boolean res = save(bean);
+            boolean res = save(bean,fileName);
             suc += res ? 1 : 0;
         }
         PrintUtil.print("成功写入数据库:" + suc + "条，失败:" + (beans.size()-suc));
     }
 
     @Override
-    public boolean save(RedisBean bean) {
+    public boolean save(RedisBean bean,String fileName) {
         Connection conn = getConnection();
 
         String sql = "INSERT INTO redis(`key`,value,timeout) VALUES (?, ?, ?)";

@@ -21,8 +21,9 @@ import java.util.List;
 public class App {
     public static final  String   SERVER_OK      = "SERVER_OK"; //结束写入标志
     public static final String    IP_SLAVE_FILE  = "slave_ip.json";
-    public static final int       HASH_LENGTH    = 300000; ///哈希槽长度
+    public static final int       HASH_LENGTH    = 90000; ///哈希槽长度
     private static List<HashBean> hashBeans      = new ArrayList<>(); //客户端保持的全局服务器数据
+    public static final int       FAIL_COUNT_LIMIT = 5; ///连接服务器失败次数极值
 
     /**
      * 初始化服务器数据，分槽
