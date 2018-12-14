@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="redis-client" />
+        <module name="redis-server" />
+        <module name="redis-slave" />
+        <module name="redis-util" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="redis-client" target="1.8" />
+      <module name="redis-java" target="1.8" />
+      <module name="redis-server" target="1.8" />
+      <module name="redis-slave" target="1.8" />
+      <module name="redis-util" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

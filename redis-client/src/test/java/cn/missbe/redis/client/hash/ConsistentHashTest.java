@@ -50,7 +50,7 @@ public class ConsistentHashTest {
         PrintUtil.print( "客户端初始化成功.", SystemLog.Level.info);
         Random random = new Random();
         int num_ip1 = 0, num_ip2 = 0, num_ip3 = 0, num_ip4 = 0;
-        for(int i = 0; i < 10; i++){
+        for(int i = 0; i < 100000; i++){
             String res = stringConsistentHash.get( StringUtils.random(2 + random.nextInt(10) ));
             System.out.println("RESULT:" + res);
             switch (res){

@@ -57,7 +57,8 @@ public class RedisClient {
 
     public static void main(String[] args) throws IOException {
         Socket socket = new Socket("127.0.0.1", 65532);
-        socket.setSoTimeout(10000); //timeout
+        //timeout
+        socket.setSoTimeout(10000);
         RedisClient redisClient = new RedisClient(socket);
         String command ;
         PrintUtil.print(socket.toString() + "客户端初始化成功.", SystemLog.Level.info);

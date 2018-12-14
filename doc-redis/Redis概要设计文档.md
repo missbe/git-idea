@@ -8,7 +8,7 @@
 
 ### Redis分布 式缓存结构图
 
-![redis分布式缓存](E:/CODE/java/idea2018/redis/doc-redis/redis.png)
+![redis分布式缓存](img/redis.jpg)
 
 ### 
 
